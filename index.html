@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة الدّارس - المنصة الدراسية التفاعلية</title>
-    <!-- Tailwind CSS CDN -->
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts - Cairo -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
+
     <script>
         tailwind.config = {
             theme: {
@@ -38,6 +36,7 @@
             }
         }
     </script>
+
     <style>
         html { color-scheme: dark; }
         body {
@@ -63,14 +62,50 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #475569;
         }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.96);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 14px;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            min-width: 220px;
+            text-align: center;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.success {
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #d1fae5;
+        }
+        .toast.error {
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #fecaca;
+        }
+        .toast.info {
+            border-color: rgba(59, 130, 246, 0.5);
+            color: #dbeafe;
+        }
     </style>
 </head>
 <body class="text-slate-100 bg-slate-950 min-h-screen flex flex-col antialiased selection:bg-primary-500 selection:text-white">
 
-    <!-- App Container -->
     <div id="app" class="min-h-screen flex flex-col">
-        
-        <!-- ONBOARDING MODAL / SCREEN -->
+
+        <!-- ONBOARDING -->
         <div id="onboarding-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
             <div class="glass-card w-full max-w-xl rounded-2xl shadow-2xl p-6 sm:p-8 overflow-y-auto max-h-[90vh] custom-scrollbar border border-white/20">
                 <div class="text-center mb-8">
@@ -82,7 +117,6 @@
                 </div>
 
                 <form id="onboarding-form" onsubmit="handleOnboardingSubmit(event)" class="space-y-6">
-                    <!-- Name Input -->
                     <div>
                         <label class="block text-sm font-semibold text-slate-200 mb-2">اسم الطالب / الطالبة <span class="text-red-500">*</span></label>
                         <div class="relative">
@@ -93,7 +127,6 @@
                         </div>
                     </div>
 
-                    <!-- Field Selection -->
                     <div>
                         <label class="block text-sm font-semibold text-slate-200 mb-2">اختر الحقل الأكاديمي <span class="text-red-500">*</span></label>
                         <div class="grid grid-cols-2 gap-3" id="fields-grid">
@@ -102,7 +135,7 @@
                                 <i class="fa-solid fa-heart-pulse text-2xl text-rose-500"></i>
                                 <span class="font-bold text-slate-100 text-sm sm:text-base">الحقل الصحي</span>
                             </label>
-                            
+
                             <label class="cursor-pointer border-2 border-slate-700 hover:border-primary-500 rounded-xl p-3 sm:p-4 flex flex-col items-center justify-center text-center transition bg-slate-900 space-y-2 field-card" onclick="selectFieldCard('هندسي')">
                                 <input type="radio" name="academic-field" value="هندسي" class="sr-only" required>
                                 <i class="fa-solid fa-compass-drafting text-2xl text-blue-500"></i>
@@ -123,7 +156,6 @@
                         </div>
                     </div>
 
-                    <!-- Elective Subject Selection -->
                     <div>
                         <label class="block text-sm font-semibold text-slate-200 mb-2">اختر المادة الاختيارية <span class="text-red-500">*</span></label>
                         <select id="elective-subject" required class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition text-slate-100 font-medium">
@@ -139,10 +171,9 @@
             </div>
         </div>
 
-        <!-- MAIN APPLICATION UI -->
+        <!-- MAIN APP -->
         <div id="main-content" class="hidden flex-1 flex flex-col">
-            
-            <!-- NAVBAR -->
+
             <header class="bg-slate-900 border-b border-slate-700 sticky top-0 z-40 shadow-sm">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                     <div class="flex items-center space-x-3 space-x-reverse">
@@ -190,12 +221,9 @@
                 </div>
             </header>
 
-            <!-- MAIN CONTAINER CONTENT -->
             <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                
-                <!-- VIEW 1: FEED & RESOURCES -->
+
                 <div id="view-feed" class="space-y-6">
-                    
                     <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-2xl p-5 sm:p-6 shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
                             <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-primary-500/20 text-primary-300 border border-primary-500/30 mb-2">
@@ -247,7 +275,6 @@
                     </div>
                 </div>
 
-                <!-- VIEW 2: SILENT STUDY ROOMS -->
                 <div id="view-rooms" class="hidden space-y-6">
                     <div class="bg-gradient-to-r from-slate-900 via-primary-950 to-slate-900 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden">
                         <div class="relative z-10 max-w-2xl">
@@ -332,9 +359,7 @@
                         <div class="lg:col-span-2 space-y-4">
                             <div class="flex items-center justify-between">
                                 <h3 class="font-bold text-slate-100 text-lg">الغرف الدراسية المتاحة الآن</h3>
-                                
                             </div>
-
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="study-rooms-grid"></div>
                         </div>
                     </div>
@@ -411,7 +436,7 @@
             </div>
         </div>
 
-        <!-- FILE PREVIEW MODAL -->
+        <!-- FILE PREVIEW -->
         <div id="preview-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm hidden">
             <div class="glass-card w-full max-w-3xl rounded-2xl shadow-2xl p-6 overflow-y-auto max-h-[90vh] custom-scrollbar border border-white/20 flex flex-col">
                 <div class="flex items-center justify-between pb-3 border-b border-slate-700 mb-4">
@@ -435,9 +460,10 @@
             </div>
         </div>
 
+        <div id="toast" class="toast"></div>
+
     </div>
 
-    <!-- SCRIPT LOGIC -->
     <script>
         const FIELD_DATA = {
             'صحّي': {
@@ -459,27 +485,69 @@
         };
 
         const GENERAL_ELECTIVES = [
-            'الرياضيات', 'الفيزياء', 'علوم الأرض والبيئة', 'الكيمياء', 
-            'العلوم الحياتية', 'علم الاجتماع وعلم النفس', 'الفلسفة', 
-            'الثقافة المالية', 'التاريخ', 'التربية الإسلامية التخصصية', 
+            'الرياضيات', 'الفيزياء', 'علوم الأرض والبيئة', 'الكيمياء',
+            'العلوم الحياتية', 'علم الاجتماع وعلم النفس', 'الفلسفة',
+            'الثقافة المالية', 'التاريخ', 'التربية الإسلامية التخصصية',
             'العربي التخصصي', 'الجغرافيا'
         ];
 
-        /* ===== إعداد Supabase (مرة واحدة) =====
-1) أنشئ مشروعاً مجانياً على supabase.com، ثم من SQL Editor نفّذ:
-create table posts (id bigint generated always as identity primary key, title text not null, author text, field text, subject text, description text, type text, file_url text, file_name text, created_at timestamptz default now());
-alter table posts enable row level security;
-create policy "read" on posts for select using (true);
-create policy "add" on posts for insert with check (true);
-insert into storage.buckets (id, name, public) values ('files','files',true);
-create policy "upload" on storage.objects for insert with check (bucket_id = 'files');
-2) من Settings > API انسخ Project URL و anon key والصقهما هنا: */
-        const SUPABASE_URL = 'https://hplrmnvgtzuusnghjbis.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhwbHJtbnZndHp1dXNuZ2hqYmlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI4NDU5NzYsImV4cCI6MjEwODQyMTk3Nn0.c0cEouNcelvDvpZkqNMbXpbv6tqBGqC1JKFgVzNej4A';
-        const BUCKET = 'files';
-        const DB_READY = !!(SUPABASE_URL && SUPABASE_KEY);
+        const DEMO_POSTS = [
+            {
+                id: 1,
+                title: 'ملخص علوم الأحياء - الفصل الأول',
+                author: 'سارة',
+                field: 'صحّي',
+                subject: 'علوم حياتية (أحياء)',
+                desc: 'ملخص متميز مع أسئلة مراجعة وشرح مبسط.',
+                type: 'pdf',
+                date: 'قبل 2 ساعة',
+                fileUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+                fileName: 'summary-biology.pdf',
+            },
+            {
+                id: 2,
+                title: 'حلول فيزياء أساسية',
+                author: 'أحمد',
+                field: 'هندسي',
+                subject: 'فيزياء',
+                desc: 'شرح سريع للمعادلات + تمارين محلولة.',
+                type: 'image',
+                date: 'قبل 4 ساعة',
+                fileUrl: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=900&q=80',
+                fileName: 'physics.jpg',
+            },
+            {
+                id: 3,
+                title: 'مراجعة لغة إنجليزية - قواعد ومفردات',
+                author: 'ليلى',
+                field: 'لغات',
+                subject: 'لغة إنجليزية',
+                desc: 'مراجعة مختصرة + قائمة كلمات لاختبار سريع.',
+                type: 'pdf',
+                date: 'قبل يوم',
+                fileUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+                fileName: 'english-review.pdf',
+            },
+            {
+                id: 4,
+                title: 'ورقة مراجعة مالية',
+                author: 'يوسف',
+                field: 'أعمال',
+                subject: 'الثقافة المالية',
+                desc: 'شرح مبسط للشروحات المالية وكيفية التحليل.',
+                type: 'image',
+                date: 'قبل 6 ساعات',
+                fileUrl: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=900&q=80',
+                fileName: 'finance.jpg',
+            }
+        ];
 
-        const STUDY_ROOMS = [];
+        const STUDY_ROOMS = [
+            { name: 'غرفة الرياضيات', field: 'هندسي', activeCount: 12, target: 'حل مسائل + مراجعة' },
+            { name: 'غرفة الكيمياء', field: 'صحّي', activeCount: 9, target: 'ملخصات + أسئلة' },
+            { name: 'غرفة اللغة الإنجليزية', field: 'لغات', activeCount: 14, target: 'مفردات + تقوية' },
+            { name: 'غرفة المراجعة الشاملة', field: 'أعمال', activeCount: 8, target: 'مراجعة أسئلة' }
+        ];
 
         let currentUser = null;
         let postsData = [];
@@ -493,18 +561,25 @@ create policy "upload" on storage.objects for insert with check (bucket_id = 'fi
         let isTimerRunning = false;
         let timerMode = 'study';
 
-        window.onload = function() {
-            loadUserData();
-            loadPostsData();
-            setInterval(loadPostsData, 30000);
-            initAppUI();
-            setupStudyRoomsUI();
-        };
+        const SUPABASE_URL = 'https://hplrmnvgtzuusnghjbis.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhwbHJtbnZndHp1dXNuZ2hqYmlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI4NDU5NzYsImV4cCI6MjEwODQyMTk3Nn0.c0cEouNcelvDvpZkqNMbXpbv6tqBGqC1JKFgVzNej4A';
+        const BUCKET = 'files';
+        const DB_READY = !!(SUPABASE_URL && SUPABASE_KEY);
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast show ${type}`;
+            clearTimeout(showToast.timeoutId);
+            showToast.timeoutId = setTimeout(() => {
+                toast.className = 'toast';
+            }, 2500);
+        }
 
         function loadUserData() {
             const saved = localStorage.getItem('aldaris_user');
             if (saved) {
-                try { currentUser = JSON.parse(saved); } catch(e) { currentUser = null; }
+                try { currentUser = JSON.parse(saved); } catch (e) { currentUser = null; }
             }
         }
 
@@ -514,7 +589,7 @@ create policy "upload" on storage.objects for insert with check (bucket_id = 'fi
         }
 
         function resetProfile() {
-            if(confirm('هل ترغب في تغيير تخصصك أو اسمك؟')) {
+            if (confirm('هل ترغب في تغيير تخصصك أو اسمك؟')) {
                 localStorage.removeItem('aldaris_user');
                 currentUser = null;
                 document.getElementById('main-content').classList.add('hidden');
@@ -535,21 +610,39 @@ create policy "upload" on storage.objects for insert with check (bucket_id = 'fi
 
         async function loadPostsData() {
             if (!DB_READY) {
-                if (!document.getElementById('db-notice')) {
-                    const n = document.createElement('div');
-                    n.id = 'db-notice';
-                    n.className = 'p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-sm font-semibold';
-                    n.textContent = 'لم يتم ربط قاعدة البيانات بعد، لن تظهر الملفات للآخرين. عبّي SUPABASE_URL و SUPABASE_KEY أعلى سكربت الملف.';
-                    document.getElementById('view-feed').prepend(n);
-                }
+                postsData = DEMO_POSTS;
+                renderPosts();
                 return;
             }
+
             try {
                 const res = await fetch(`${SUPABASE_URL}/rest/v1/posts?select=*&order=created_at.desc`, { headers: sbHeaders() });
                 if (!res.ok) throw new Error(res.status);
-                postsData = (await res.json()).map(r => ({ id: r.id, title: r.title, author: r.author, field: r.field, subject: r.subject, desc: r.description, type: r.type, date: timeAgo(r.created_at), fileUrl: r.file_url, fileName: r.file_name }));
-                if (currentUser) renderPosts();
-            } catch (e) { console.error(e); }
+
+                const apiPosts = await res.json();
+                if (!apiPosts || apiPosts.length === 0) {
+                    postsData = DEMO_POSTS;
+                } else {
+                    postsData = apiPosts.map(r => ({
+                        id: r.id,
+                        title: r.title,
+                        author: r.author,
+                        field: r.field,
+                        subject: r.subject,
+                        desc: r.description,
+                        type: r.type,
+                        date: timeAgo(r.created_at),
+                        fileUrl: r.file_url,
+                        fileName: r.file_name
+                    }));
+                }
+
+                renderPosts();
+            } catch (e) {
+                console.error('Supabase load failed, using demo data:', e);
+                postsData = DEMO_POSTS;
+                renderPosts();
+            }
         }
 
         function selectFieldCard(selectedField) {
@@ -585,12 +678,13 @@ create policy "upload" on storage.objects for insert with check (bucket_id = 'fi
             const elective = document.getElementById('elective-subject').value;
 
             if (!name || !fieldRadio || !elective) {
-                alert('يرجى تعبئة جميع الحقول المطلوبة واختيار الحقل الأكاديمي والمادة.');
+                showToast('يرجى تعبئة جميع الحقول المطلوبة.', 'error');
                 return;
             }
 
             saveUserData(name, fieldRadio.value, elective);
             initAppUI();
+            showToast('تم تسجيل الدخول بنجاح', 'success');
         }
 
         function initAppUI() {
@@ -684,7 +778,7 @@ create policy "upload" on storage.objects for insert with check (bucket_id = 'fi
             let filtered = [...postsData];
 
             if (activeFilter === 'all') {
-                // show everything
+                // all
             } else if (activeFilter === 'my-feed') {
                 const userCore = FIELD_DATA[currentUser.field]?.core || [];
                 const userElective = currentUser.elective;
@@ -780,31 +874,90 @@ create policy "upload" on storage.objects for insert with check (bucket_id = 'fi
 
         async function handleNewPostSubmit(e) {
             e.preventDefault();
-            if (!DB_READY) { alert('لم يتم ربط قاعدة البيانات بعد. عبّي SUPABASE_URL و SUPABASE_KEY في الملف.'); return; }
             const title = document.getElementById('post-title').value.trim();
             const field = document.getElementById('post-field').value;
             const subject = document.getElementById('post-subject').value;
             const desc = document.getElementById('post-desc').value.trim();
             const input = document.getElementById('dummy-file-input');
             const file = input.files[0];
-            if (!title || !subject) return;
-            if (!file) { alert('اختر الملف أولاً.'); return; }
+
+            if (!title || !field || !subject) {
+                showToast('برجاء إدخال جميع الحقول المطلوبة.', 'error');
+                return;
+            }
+            if (!file) {
+                showToast('اختر الملف أولاً.', 'error');
+                return;
+            }
+
             const isImg = file.type.startsWith('image/');
-            if (!isImg && file.type !== 'application/pdf') { alert('المسموح PDF أو صور فقط.'); return; }
-            if (file.size > 50 * 1024 * 1024) { alert('حجم الملف أكبر من 50 ميجابايت.'); return; }
+            if (!isImg && file.type !== 'application/pdf') {
+                showToast('المسموح فقط PDF أو صور.', 'error');
+                return;
+            }
+            if (file.size > 50 * 1024 * 1024) {
+                showToast('حجم الملف كبير جدًا (الحد الأقصى 50MB).', 'error');
+                return;
+            }
 
             const btn = e.target.querySelector('button[type="submit"]');
             const oldText = btn.textContent;
-            btn.disabled = true; btn.textContent = 'جاري الرفع...';
+            btn.disabled = true;
+            btn.textContent = 'جاري الرفع...';
+
             try {
+                if (!DB_READY) {
+                    const newPost = {
+                        id: Date.now(),
+                        title,
+                        author: currentUser?.name || 'طالب',
+                        field,
+                        subject,
+                        desc,
+                        type: isImg ? 'image' : 'pdf',
+                        date: 'الآن',
+                        fileUrl: isImg ? URL.createObjectURL(file) : 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+                        fileName: file.name
+                    };
+                    postsData.unshift(newPost);
+                    renderPosts();
+                    showToast('تمت إضافة المنشور تجريبياً بنجاح', 'success');
+                    closePostModal();
+                    document.getElementById('post-title').value = '';
+                    document.getElementById('post-desc').value = '';
+                    input.value = '';
+                    document.getElementById('file-upload-label').textContent = 'اضغط لاختيار ملف من جهازك';
+                    return;
+                }
+
                 const ext = (file.name.split('.').pop() || 'bin').replace(/[^a-z0-9]/gi, '').toLowerCase();
                 const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-                let r = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`, { method: 'POST', headers: sbHeaders({ 'Content-Type': file.type }), body: file });
+                let r = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`, {
+                    method: 'POST',
+                    headers: sbHeaders({ 'Content-Type': file.type }),
+                    body: file
+                });
                 if (!r.ok) throw new Error('upload');
+
                 const fileUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${path}`;
-                r = await fetch(`${SUPABASE_URL}/rest/v1/posts`, { method: 'POST', headers: sbHeaders({ 'Content-Type': 'application/json' }), body: JSON.stringify({ title, author: currentUser.name, field, subject, description: desc, type: isImg ? 'image' : 'pdf', file_url: fileUrl, file_name: file.name }) });
+                r = await fetch(`${SUPABASE_URL}/rest/v1/posts`, {
+                    method: 'POST',
+                    headers: sbHeaders({ 'Content-Type': 'application/json' }),
+                    body: JSON.stringify({
+                        title,
+                        author: currentUser.name,
+                        field,
+                        subject,
+                        description: desc,
+                        type: isImg ? 'image' : 'pdf',
+                        file_url: fileUrl,
+                        file_name: file.name
+                    })
+                });
+
                 if (!r.ok) throw new Error('insert');
 
+                showToast('تم نشر الملف بنجاح', 'success');
                 document.getElementById('post-title').value = '';
                 document.getElementById('post-desc').value = '';
                 input.value = '';
@@ -813,9 +966,10 @@ create policy "upload" on storage.objects for insert with check (bucket_id = 'fi
                 await loadPostsData();
             } catch (err) {
                 console.error(err);
-                alert('تعذّر رفع الملف، حاول مرة أخرى.');
+                showToast('تعذّر رفع الملف، حاول مرة أخرى.', 'error');
             } finally {
-                btn.disabled = false; btn.textContent = oldText;
+                btn.disabled = false;
+                btn.textContent = oldText;
             }
         }
 
@@ -853,9 +1007,12 @@ create policy "upload" on storage.objects for insert with check (bucket_id = 'fi
             if (!currentPreviewPost) return;
             const a = document.createElement('a');
             a.href = currentPreviewPost.fileUrl;
-            a.target = '_blank'; a.rel = 'noopener';
+            a.target = '_blank';
+            a.rel = 'noopener';
             a.download = currentPreviewPost.fileName || '';
-            document.body.appendChild(a); a.click(); a.remove();
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
         }
 
         function switchTab(tab) {
@@ -886,10 +1043,6 @@ create policy "upload" on storage.objects for insert with check (bucket_id = 'fi
         function setupStudyRoomsUI() {
             const grid = document.getElementById('study-rooms-grid');
             grid.innerHTML = '';
-            if (!STUDY_ROOMS.length) {
-                grid.innerHTML = '<div class="sm:col-span-2 text-center py-12 rounded-2xl border border-dashed border-slate-600 text-slate-400 text-sm font-semibold">لا توجد غرف دراسية حالياً</div>';
-                return;
-            }
 
             STUDY_ROOMS.forEach(room => {
                 const card = document.createElement('div');
@@ -917,13 +1070,13 @@ create policy "upload" on storage.objects for insert with check (bucket_id = 'fi
         }
 
         function enterSilentRoom(roomName) {
-            alert(`تم دخول "${roomName}". يمكنك الاستعانة بمؤقت البومودورو وتشغيل صوت الخلفية المفضل لمباشرة الدراسة!`);
+            showToast(`تم دخول "${roomName}" بنجاح`, 'success');
         }
 
         function updateTimerDisplay() {
             const mins = Math.floor(timerSeconds / 60);
             const secs = timerSeconds % 60;
-            document.getElementById('timer-display').textContent = 
+            document.getElementById('timer-display').textContent =
                 `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
 
@@ -947,7 +1100,8 @@ create policy "upload" on storage.objects for insert with check (bucket_id = 'fi
                         clearInterval(timerInterval);
                         isTimerRunning = false;
                         btn.innerHTML = '<i class="fa-solid fa-play ml-1.5 text-sm"></i> بدء';
-                        alert(timerMode === 'study' ? 'انتهت جلسة الدراسة! خذ استراحة لمدة 5 دقائق.' : 'انتهت الاستراحة! استعد لجلسة دراسة جديدة.');
+                        btn.className = "px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl shadow-md transition flex items-center";
+                        showToast(timerMode === 'study' ? 'انتهت جلسة الدراسة! خذ استراحة لمدة 5 دقائق.' : 'انتهت الاستراحة! استعد لجلسة دراسة جديدة.', 'info');
                     }
                 }, 1000);
             }
@@ -1031,10 +1185,20 @@ create policy "upload" on storage.objects for insert with check (bucket_id = 'fi
 
             return {
                 stop: () => {
-                    try { noise.stop(); } catch(e){}
+                    try { noise.stop(); } catch (e) {}
                 }
             };
         }
+
+        window.onload = function() {
+            loadUserData();
+            loadPostsData();
+            setInterval(loadPostsData, 30000);
+
+            initAppUI();
+            setupStudyRoomsUI();
+            updateTimerDisplay();
+        };
     </script>
 </body>
 </html>
