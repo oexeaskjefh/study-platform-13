@@ -398,7 +398,7 @@
                             <input type="file" id="dummy-file-input" accept=".pdf,image/*" class="hidden" onchange="handleFileSelect(event)">
                             <i class="fa-solid fa-file-arrow-up text-2xl text-slate-400 mb-1 block"></i>
                             <p class="text-xs font-bold text-slate-300" id="file-upload-label">اضغط لاختيار ملف من جهازك</p>
-                            <p class="text-[10px] text-slate-400 mt-0.5">PDF، PNG، JPG حتى 15 ميجابايت</p>
+                            <p class="text-[10px] text-slate-400 mt-0.5">PDF، PNG، JPG حتى 50 ميجابايت</p>
                         </div>
                     </div>
 
@@ -791,7 +791,7 @@ create policy "upload" on storage.objects for insert with check (bucket_id = 'fi
             if (!file) { alert('اختر الملف أولاً.'); return; }
             const isImg = file.type.startsWith('image/');
             if (!isImg && file.type !== 'application/pdf') { alert('المسموح PDF أو صور فقط.'); return; }
-            if (file.size > 15 * 1024 * 1024) { alert('حجم الملف أكبر من 15 ميجابايت.'); return; }
+            if (file.size > 50 * 1024 * 1024) { alert('حجم الملف أكبر من 50 ميجابايت.'); return; }
 
             const btn = e.target.querySelector('button[type="submit"]');
             const oldText = btn.textContent;
