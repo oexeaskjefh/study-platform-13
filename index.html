@@ -474,8 +474,8 @@ create policy "add" on posts for insert with check (true);
 insert into storage.buckets (id, name, public) values ('files','files',true);
 create policy "upload" on storage.objects for insert with check (bucket_id = 'files');
 2) من Settings > API انسخ Project URL و anon key والصقهما هنا: */
-       const SUPABASE_URL = 'https://hplrmnvgtzuusnghjbis.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhwbHJtbnZndHp1dXNuZ2hqYmlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI4NDU5NzYsImV4cCI6MjEwODQyMTk3Nn0.c0cEouNcelvDvpZkqNMbXpbv6tqBGqC1JKFgVzNej4A;
+        const SUPABASE_URL = 'https://hplrmnvgtzuusnghjbis.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhwbHJtbnZndHp1dXNuZ2hqYmlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI4NDU5NzYsImV4cCI6MjEwODQyMTk3Nn0.c0cEouNcelvDvpZkqNMbXpbv6tqBGqC1JKFgVzNej4A';
         const BUCKET = 'files';
         const DB_READY = !!(SUPABASE_URL && SUPABASE_KEY);
 
