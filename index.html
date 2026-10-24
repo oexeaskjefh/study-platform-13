@@ -1,1204 +1,620 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الدّارس - المنصة الدراسية التفاعلية</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>منصة الدّارس</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        cairo: ['Cairo', 'sans-serif'],
-                    },
-                    colors: {
-                        primary: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                        },
-                        accent: {
-                            500: '#14b8a6',
-                            600: '#0d9488',
-                        }
-                    }
-                }
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { cairo: ['Cairo', 'sans-serif'] },
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985'
+            },
+            accent: {
+              500: '#14b8a6',
+              600: '#0d9488'
             }
+          }
         }
-    </script>
+      }
+    }
+  </script>
 
-    <style>
-        html { color-scheme: dark; }
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #020617;
-        }
-        .glass-card {
-            background: rgba(15, 23, 42, 0.97);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(51, 65, 85, 0.8);
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #0f172a;
-            border-radius: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #475569;
-        }
+  <style>
+    html { color-scheme: dark; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #020617;
+    }
 
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-            z-index: 100;
-            background: rgba(15, 23, 42, 0.96);
-            border: 1px solid rgba(148, 163, 184, 0.3);
-            color: white;
-            padding: 12px 18px;
-            border-radius: 14px;
-            font-size: 13px;
-            font-weight: 700;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-            min-width: 220px;
-            text-align: center;
-        }
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-        .toast.success {
-            border-color: rgba(16, 185, 129, 0.5);
-            color: #d1fae5;
-        }
-        .toast.error {
-            border-color: rgba(239, 68, 68, 0.5);
-            color: #fecaca;
-        }
-        .toast.info {
-            border-color: rgba(59, 130, 246, 0.5);
-            color: #dbeafe;
-        }
-    </style>
+    .glass-card {
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.6);
+    }
+
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #0f172a; border-radius: 8px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 8px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      color: white;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 220px;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .toast.success { border-color: rgba(16, 185, 129, 0.5); color: #d1fae5; }
+    .toast.error { border-color: rgba(239, 68, 68, 0.5); color: #fecaca; }
+    .toast.info { border-color: rgba(59, 130, 246, 0.5); color: #dbeafe; }
+
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
 </head>
-<body class="text-slate-100 bg-slate-950 min-h-screen flex flex-col antialiased selection:bg-primary-500 selection:text-white">
+<body class="text-slate-100 bg-slate-950 min-h-screen antialiased selection:bg-primary-500 selection:text-white">
 
-    <div id="app" class="min-h-screen flex flex-col">
+  <div id="app" class="min-h-screen flex flex-col">
 
-        <!-- ONBOARDING -->
-        <div id="onboarding-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-            <div class="glass-card w-full max-w-xl rounded-2xl shadow-2xl p-6 sm:p-8 overflow-y-auto max-h-[90vh] custom-scrollbar border border-white/20">
-                <div class="text-center mb-8">
-                    <div class="w-16 h-16 bg-gradient-to-tr from-primary-600 to-accent-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg text-white text-2xl">
-                        <i class="fa-solid fa-graduation-cap"></i>
-                    </div>
-                    <h1 class="text-2xl sm:text-3xl font-bold text-slate-100">أهلاً بك في منصة الدّارس</h1>
-                    <p class="text-slate-400 text-sm sm:text-base mt-2">منصة دراسية خالية من التشتيت - صُممت لمساعدتك على التفوق</p>
-                </div>
+    <!-- onboarding -->
+    <div id="onboarding-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+      <div class="glass-card w-full max-w-xl rounded-2xl p-6 sm:p-8 overflow-y-auto max-h-[90vh] custom-scrollbar border border-white/20">
+        <div class="text-center mb-8">
+          <div class="w-16 h-16 bg-gradient-to-tr from-primary-600 to-accent-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg text-white text-2xl">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-bold text-slate-100">أهلاً بك في منصة الدّارس</h1>
+          <p class="text-slate-400 text-sm sm:text-base mt-2">منصة دراسية خالية من التشتيت - صُممت لمساعدتك على التفوق</p>
+        </div>
 
-                <form id="onboarding-form" onsubmit="handleOnboardingSubmit(event)" class="space-y-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-200 mb-2">اسم الطالب / الطالبة <span class="text-red-500">*</span></label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none text-slate-400">
-                                <i class="fa-regular fa-user"></i>
-                            </span>
-                            <input type="text" id="user-name" required placeholder="أدخل اسمك الكريم..." class="w-full pr-10 pl-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition text-slate-100 font-medium placeholder-slate-400">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-200 mb-2">اختر الحقل الأكاديمي <span class="text-red-500">*</span></label>
-                        <div class="grid grid-cols-2 gap-3" id="fields-grid">
-                            <label class="cursor-pointer border-2 border-slate-700 hover:border-primary-500 rounded-xl p-3 sm:p-4 flex flex-col items-center justify-center text-center transition bg-slate-900 space-y-2 field-card" onclick="selectFieldCard('صحّي')">
-                                <input type="radio" name="academic-field" value="صحّي" class="sr-only" required>
-                                <i class="fa-solid fa-heart-pulse text-2xl text-rose-500"></i>
-                                <span class="font-bold text-slate-100 text-sm sm:text-base">الحقل الصحي</span>
-                            </label>
-
-                            <label class="cursor-pointer border-2 border-slate-700 hover:border-primary-500 rounded-xl p-3 sm:p-4 flex flex-col items-center justify-center text-center transition bg-slate-900 space-y-2 field-card" onclick="selectFieldCard('هندسي')">
-                                <input type="radio" name="academic-field" value="هندسي" class="sr-only" required>
-                                <i class="fa-solid fa-compass-drafting text-2xl text-blue-500"></i>
-                                <span class="font-bold text-slate-100 text-sm sm:text-base">الحقل الهندسي</span>
-                            </label>
-
-                            <label class="cursor-pointer border-2 border-slate-700 hover:border-primary-500 rounded-xl p-3 sm:p-4 flex flex-col items-center justify-center text-center transition bg-slate-900 space-y-2 field-card" onclick="selectFieldCard('لغات')">
-                                <input type="radio" name="academic-field" value="لغات" class="sr-only" required>
-                                <i class="fa-solid fa-language text-2xl text-emerald-500"></i>
-                                <span class="font-bold text-slate-100 text-sm sm:text-base">حقل اللغات</span>
-                            </label>
-
-                            <label class="cursor-pointer border-2 border-slate-700 hover:border-primary-500 rounded-xl p-3 sm:p-4 flex flex-col items-center justify-center text-center transition bg-slate-900 space-y-2 field-card" onclick="selectFieldCard('أعمال')">
-                                <input type="radio" name="academic-field" value="أعمال" class="sr-only" required>
-                                <i class="fa-solid fa-briefcase text-2xl text-amber-500"></i>
-                                <span class="font-bold text-slate-100 text-sm sm:text-base">حقل الأعمال</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-200 mb-2">اختر المادة الاختيارية <span class="text-red-500">*</span></label>
-                        <select id="elective-subject" required class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition text-slate-100 font-medium">
-                            <option value="" disabled selected>اختر الحقل أولاً...</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-primary-600 to-accent-500 text-white font-bold rounded-xl shadow-lg hover:shadow-primary-500/25 transition transform active:scale-98 flex items-center justify-center space-x-2 space-x-reverse">
-                        <span>الدخول إلى المنصة</span>
-                        <i class="fa-solid fa-arrow-left"></i>
-                    </button>
-                </form>
+        <form id="onboarding-form" onsubmit="handleOnboardingSubmit(event)" class="space-y-6">
+          <div>
+            <label class="block text-sm font-semibold text-slate-200 mb-2">اسم الطالب / الطالبة <span class="text-red-500">*</span></label>
+            <div class="relative">
+              <span class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none text-slate-400">
+                <i class="fa-regular fa-user"></i>
+              </span>
+              <input type="text" id="user-name" required placeholder="أدخل اسمك الكريم..." class="w-full pr-10 pl-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none transition text-slate-100 font-medium placeholder-slate-400">
             </div>
-        </div>
+          </div>
 
-        <!-- MAIN APP -->
-        <div id="main-content" class="hidden flex-1 flex flex-col">
+          <div>
+            <label class="block text-sm font-semibold text-slate-200 mb-2">اختر الحقل الأكاديمي <span class="text-red-500">*</span></label>
+            <div class="grid grid-cols-2 gap-3">
+              <label class="field-card cursor-pointer border-2 border-slate-700 hover:border-primary-500 rounded-xl p-3 sm:p-4 flex flex-col items-center justify-center text-center transition bg-slate-900 space-y-2" onclick="selectFieldCard('صحّي')">
+                <input type="radio" name="academic-field" value="صحّي" class="sr-only" required>
+                <i class="fa-solid fa-heart-pulse text-2xl text-rose-500"></i>
+                <span class="font-bold text-slate-100 text-sm sm:text-base">الحقل الصحي</span>
+              </label>
 
-            <header class="bg-slate-900 border-b border-slate-700 sticky top-0 z-40 shadow-sm">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                    <div class="flex items-center space-x-3 space-x-reverse">
-                        <div class="w-10 h-10 bg-gradient-to-tr from-primary-600 to-accent-500 rounded-xl flex items-center justify-center text-white text-lg shadow-md">
-                            <i class="fa-solid fa-graduation-cap"></i>
-                        </div>
-                        <div>
-                            <h1 class="font-extrabold text-lg text-slate-100 leading-tight">منصة الدّارس</h1>
-                            <span class="text-xs text-slate-400 font-medium">منصة دراسية خالية من الشات والتشتيت</span>
-                        </div>
-                    </div>
+              <label class="field-card cursor-pointer border-2 border-slate-700 hover:border-primary-500 rounded-xl p-3 sm:p-4 flex flex-col items-center justify-center text-center transition bg-slate-900 space-y-2" onclick="selectFieldCard('هندسي')">
+                <input type="radio" name="academic-field" value="هندسي" class="sr-only" required>
+                <i class="fa-solid fa-compass-drafting text-2xl text-blue-500"></i>
+                <span class="font-bold text-slate-100 text-sm sm:text-base">الحقل الهندسي</span>
+              </label>
 
-                    <div class="flex items-center space-x-3 sm:space-x-6 space-x-reverse">
-                        <nav class="hidden md:flex items-center bg-slate-800 p-1 rounded-xl space-x-1 space-x-reverse">
-                            <button onclick="switchTab('feed')" id="nav-feed" class="px-4 py-1.5 rounded-lg text-sm font-bold transition text-primary-300 bg-slate-700 shadow-sm">
-                                <i class="fa-solid fa-book-open ml-1.5"></i>الشروحات والملفات
-                            </button>
-                            <button onclick="switchTab('rooms')" id="nav-rooms" class="px-4 py-1.5 rounded-lg text-sm font-bold transition text-slate-300 hover:text-slate-100">
-                                <i class="fa-solid fa-headphones ml-1.5"></i>غرف الدراسة الصامتة
-                            </button>
-                        </nav>
+              <label class="field-card cursor-pointer border-2 border-slate-700 hover:border-primary-500 rounded-xl p-3 sm:p-4 flex flex-col items-center justify-center text-center transition bg-slate-900 space-y-2" onclick="selectFieldCard('لغات')">
+                <input type="radio" name="academic-field" value="لغات" class="sr-only" required>
+                <i class="fa-solid fa-language text-2xl text-emerald-500"></i>
+                <span class="font-bold text-slate-100 text-sm sm:text-base">حقل اللغات</span>
+              </label>
 
-                        <div class="flex items-center space-x-2 space-x-reverse border-r pr-3 border-slate-700">
-                            <div class="w-9 h-9 rounded-full bg-primary-500/20 text-primary-300 font-bold flex items-center justify-center text-sm border border-primary-500/30" id="user-avatar">
-                                ط
-                            </div>
-                            <div class="hidden sm:block text-right">
-                                <p class="text-xs font-bold text-slate-100 leading-tight" id="profile-name">طالب</p>
-                                <p class="text-[11px] text-slate-400 font-semibold" id="profile-details">الحقل | المادة</p>
-                            </div>
-                            <button onclick="resetProfile()" title="تغيير التخصص أو الاسم" class="text-slate-400 hover:text-rose-500 p-1.5 transition">
-                                <i class="fa-solid fa-right-from-bracket"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="md:hidden flex border-t border-slate-800 bg-slate-950">
-                    <button onclick="switchTab('feed')" id="mob-nav-feed" class="flex-1 py-2 text-center text-xs font-bold text-primary-400 border-b-2 border-primary-600">
-                        <i class="fa-solid fa-book-open block text-base mb-0.5"></i>الملفات والشروحات
-                    </button>
-                    <button onclick="switchTab('rooms')" id="mob-nav-rooms" class="flex-1 py-2 text-center text-xs font-bold text-slate-400">
-                        <i class="fa-solid fa-headphones block text-base mb-0.5"></i>الغرف الصامتة
-                    </button>
-                </div>
-            </header>
-
-            <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-
-                <div id="view-feed" class="space-y-6">
-                    <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-2xl p-5 sm:p-6 shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div>
-                            <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-primary-500/20 text-primary-300 border border-primary-500/30 mb-2">
-                                <i class="fa-solid fa-filter ml-1.5"></i>التصفية التلقائية المفعلة
-                            </div>
-                            <h2 class="text-xl sm:text-2xl font-bold" id="feed-header-title">منشورات الحقل الخاص بك</h2>
-                            <p class="text-slate-300 text-xs sm:text-sm mt-1" id="feed-header-subtitle">يتم عرض ملفات وشروحات المواد الخاصة بتخصصك فقط لتركيز مضاعف.</p>
-                        </div>
-
-                        <button onclick="openPostModal()" class="inline-flex items-center justify-center px-5 py-3 bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition transform active:scale-95 whitespace-nowrap">
-                            <i class="fa-solid fa-plus-circle ml-2 text-lg"></i>
-                            <span>نشر شرح أو ملف جديد</span>
-                        </button>
-                    </div>
-
-                    <div class="bg-slate-900 rounded-xl p-2 border border-slate-700 flex items-center space-x-2 space-x-reverse overflow-x-auto custom-scrollbar">
-                        <button onclick="filterPosts('all')" id="filter-btn-all" class="filter-tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-bold whitespace-nowrap bg-primary-500/10 text-primary-300 border border-primary-500/30"><i class="fa-solid fa-layer-group ml-1.5"></i>الكل</button>
-                        <button onclick="filterPosts('my-feed')" id="filter-btn-my-feed" class="filter-tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-bold whitespace-nowrap text-slate-300 hover:bg-slate-800">
-                            <i class="fa-solid fa-user-check ml-1.5"></i>موادي المخصصة
-                        </button>
-                        <div class="h-5 w-px bg-slate-700 mx-1"></div>
-                        <button onclick="filterPosts('صحّي')" id="filter-btn-صحّي" class="filter-tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-bold whitespace-nowrap text-slate-300 hover:bg-slate-800">
-                            <i class="fa-solid fa-heart-pulse ml-1.5 text-rose-500"></i>الحقل الصحي
-                        </button>
-                        <button onclick="filterPosts('هندسي')" id="filter-btn-هندسي" class="filter-tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-bold whitespace-nowrap text-slate-300 hover:bg-slate-800">
-                            <i class="fa-solid fa-compass-drafting ml-1.5 text-blue-500"></i>الحقل الهندسي
-                        </button>
-                        <button onclick="filterPosts('لغات')" id="filter-btn-لغات" class="filter-tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-bold whitespace-nowrap text-slate-300 hover:bg-slate-800">
-                            <i class="fa-solid fa-language ml-1.5 text-emerald-500"></i>حقل اللغات
-                        </button>
-                        <button onclick="filterPosts('أعمال')" id="filter-btn-أعمال" class="filter-tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-bold whitespace-nowrap text-slate-300 hover:bg-slate-800">
-                            <i class="fa-solid fa-briefcase ml-1.5 text-amber-500"></i>حقل الأعمال
-                        </button>
-                    </div>
-
-                    <div id="subject-pills-container" class="flex flex-wrap gap-2 text-xs font-semibold"></div>
-
-                    <div id="posts-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-
-                    <div id="empty-state" class="hidden text-center py-16 bg-slate-900 rounded-2xl border border-dashed border-slate-600">
-                        <div class="w-16 h-16 bg-slate-800 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-                            <i class="fa-solid fa-folder-open"></i>
-                        </div>
-                        <h3 class="font-bold text-slate-200 text-lg">لا توجد ملفات أو شروحات حالياً</h3>
-                        <p class="text-slate-400 text-sm mt-1 max-w-md mx-auto">كن أول من يشارك ملخصاته وشروحاته مع زملائك لمساعدتهم في هذا المبحث!</p>
-                        <button onclick="openPostModal()" class="mt-4 px-4 py-2 bg-primary-600 text-white rounded-xl text-sm font-bold shadow hover:bg-primary-700 transition">
-                            نشر ملف الآن
-                        </button>
-                    </div>
-                </div>
-
-                <div id="view-rooms" class="hidden space-y-6">
-                    <div class="bg-gradient-to-r from-slate-900 via-primary-950 to-slate-900 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden">
-                        <div class="relative z-10 max-w-2xl">
-                            <span class="px-3 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-full text-xs font-bold mb-3 inline-block">
-                                <i class="fa-solid fa-microphone-slash ml-1.5"></i>بيئة دراسية صامتة 100%
-                            </span>
-                            <h2 class="text-2xl font-bold">غرف الدراسة الجماعية الصامتة</h2>
-                            <p class="text-slate-300 text-sm mt-2 leading-relaxed">
-                                ادخل الغرفة، فعّل مؤقت البومودورو، واستمع للأصوات المريحة للتركيز. لا توجد مايكروفونات ولا شات نصي لضمان بيئة خالية تماماً من المشتتات.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="lg:col-span-1 space-y-6">
-                            <div class="bg-slate-900 rounded-2xl p-6 border border-slate-700 shadow-sm text-center">
-                                <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
-                                    <h3 class="font-bold text-slate-100 text-sm flex items-center">
-                                        <i class="fa-regular fa-clock ml-2 text-primary-400"></i>مؤقت التركيز (بومودورو)
-                                    </h3>
-                                    <span id="timer-mode-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary-500/10 text-primary-400">وقت الدراسة</span>
-                                </div>
-
-                                <div class="my-6">
-                                    <div class="text-5xl font-black text-slate-100 tracking-wider font-mono" id="timer-display">25:00</div>
-                                </div>
-
-                                <div class="flex items-center justify-center space-x-2 space-x-reverse mb-4">
-                                    <button onclick="toggleTimer()" id="timer-start-btn" class="px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl shadow-md transition flex items-center">
-                                        <i class="fa-solid fa-play ml-1.5 text-sm"></i> بدء
-                                    </button>
-                                    <button onclick="resetTimer()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl transition">
-                                        <i class="fa-solid fa-rotate-right"></i>
-                                    </button>
-                                </div>
-
-                                <div class="grid grid-cols-2 gap-2 text-xs font-bold pt-2">
-                                    <button onclick="setTimerMode('study')" class="py-2 rounded-lg bg-primary-500/10 text-primary-300">25 دقيقة (دراسة)</button>
-                                    <button onclick="setTimerMode('break')" class="py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700">5 دقائق (راحة)</button>
-                                </div>
-                            </div>
-
-                            <div class="bg-slate-900 rounded-2xl p-6 border border-slate-700 shadow-sm">
-                                <h3 class="font-bold text-slate-100 text-sm mb-4 pb-3 border-b border-slate-800 flex items-center">
-                                    <i class="fa-solid fa-sliders ml-2 text-accent-600"></i>أصوات الخلفية المريحة
-                                </h3>
-
-                                <div class="space-y-4">
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center space-x-2 space-x-reverse text-sm font-semibold text-slate-200">
-                                            <i class="fa-solid fa-cloud-showers-heavy text-slate-400 w-5"></i>
-                                            <span>صوت المطر</span>
-                                        </div>
-                                        <button onclick="toggleAmbientSound('rain')" id="sound-btn-rain" class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">
-                                            تشغيل
-                                        </button>
-                                    </div>
-
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center space-x-2 space-x-reverse text-sm font-semibold text-slate-200">
-                                            <i class="fa-solid fa-book-reader text-slate-400 w-5"></i>
-                                            <span>هدوء المكتبة</span>
-                                        </div>
-                                        <button onclick="toggleAmbientSound('library')" id="sound-btn-library" class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">
-                                            تشغيل
-                                        </button>
-                                    </div>
-
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center space-x-2 space-x-reverse text-sm font-semibold text-slate-200">
-                                            <i class="fa-solid fa-water text-slate-400 w-5"></i>
-                                            <span>أمواج البحر</span>
-                                        </div>
-                                        <button onclick="toggleAmbientSound('waves')" id="sound-btn-waves" class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">
-                                            تشغيل
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="lg:col-span-2 space-y-4">
-                            <div class="flex items-center justify-between">
-                                <h3 class="font-bold text-slate-100 text-lg">الغرف الدراسية المتاحة الآن</h3>
-                            </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="study-rooms-grid"></div>
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </div>
-
-        <!-- NEW POST MODAL -->
-        <div id="post-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden">
-            <div class="glass-card w-full max-w-lg rounded-2xl shadow-2xl p-6 overflow-y-auto max-h-[90vh] custom-scrollbar border border-white/20">
-                <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-700">
-                    <h3 class="font-bold text-lg text-slate-100 flex items-center">
-                        <i class="fa-solid fa-cloud-arrow-up ml-2 text-primary-400"></i>مشاركة شرح أو ملف جديد
-                    </h3>
-                    <button onclick="closePostModal()" class="text-slate-400 hover:text-slate-200 p-1">
-                        <i class="fa-solid fa-xmark text-lg"></i>
-                    </button>
-                </div>
-
-                <form onsubmit="handleNewPostSubmit(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-200 mb-1">عنوان الشرح / الملف <span class="text-red-500">*</span></label>
-                        <input type="text" id="post-title" required placeholder="مثال: تلخيص الفصل الأول كيمياء..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none text-sm">
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-200 mb-1">الحقل الموجه له <span class="text-red-500">*</span></label>
-                            <select id="post-field" required onchange="updatePostSubjectDropdown()" class="w-full px-3 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none text-xs sm:text-sm font-semibold">
-                                <option value="صحّي">الحقل الصحي</option>
-                                <option value="هندسي">الحقل الهندسي</option>
-                                <option value="لغات">حقل اللغات</option>
-                                <option value="أعمال">حقل الأعمال</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-200 mb-1">المادة <span class="text-red-500">*</span></label>
-                            <select id="post-subject" required class="w-full px-3 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none text-xs sm:text-sm font-semibold"></select>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-slate-200 mb-1">وصف قصير أو الملاحظات</label>
-                        <textarea id="post-desc" rows="3" placeholder="اكتب ملاحظات توضيحية لزملائك عن هذا الملف..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none text-sm resize-none"></textarea>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-slate-200 mb-1">نوع المرفق <span class="text-red-500">*</span></label>
-                        <div class="flex items-center space-x-3 space-x-reverse mb-2">
-                            <label class="flex items-center text-xs font-semibold text-slate-200 cursor-pointer">
-                                <input type="radio" name="post-type" value="pdf" checked class="ml-1 text-primary-400 focus:ring-primary-500">
-                                <i class="fa-solid fa-file-pdf text-red-500 ml-1"></i>ملف PDF
-                            </label>
-                            <label class="flex items-center text-xs font-semibold text-slate-200 cursor-pointer">
-                                <input type="radio" name="post-type" value="image" class="ml-1 text-primary-400 focus:ring-primary-500">
-                                <i class="fa-solid fa-image text-emerald-500 ml-1"></i>صورة شرح
-                            </label>
-                        </div>
-
-                        <div class="border-2 border-dashed border-slate-600 rounded-xl p-4 text-center bg-slate-950 hover:bg-slate-800 transition cursor-pointer relative" onclick="triggerFileInput()">
-                            <input type="file" id="dummy-file-input" accept=".pdf,image/*" class="hidden" onchange="handleFileSelect(event)">
-                            <i class="fa-solid fa-file-arrow-up text-2xl text-slate-400 mb-1 block"></i>
-                            <p class="text-xs font-bold text-slate-300" id="file-upload-label">اضغط لاختيار ملف من جهازك</p>
-                            <p class="text-[10px] text-slate-400 mt-0.5">PDF، PNG، JPG حتى 50 ميجابايت</p>
-                        </div>
-                    </div>
-
-                    <div class="pt-2">
-                        <button type="submit" class="w-full py-3 bg-gradient-to-r from-primary-600 to-accent-500 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition">
-                            نشر الملف الآن
-                        </button>
-                    </div>
-                </form>
+              <label class="field-card cursor-pointer border-2 border-slate-700 hover:border-primary-500 rounded-xl p-3 sm:p-4 flex flex-col items-center justify-center text-center transition bg-slate-900 space-y-2" onclick="selectFieldCard('أعمال')">
+                <input type="radio" name="academic-field" value="أعمال" class="sr-only" required>
+                <i class="fa-solid fa-briefcase text-2xl text-amber-500"></i>
+                <span class="font-bold text-slate-100 text-sm sm:text-base">حقل الأعمال</span>
+              </label>
             </div>
-        </div>
+          </div>
 
-        <!-- FILE PREVIEW -->
-        <div id="preview-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm hidden">
-            <div class="glass-card w-full max-w-3xl rounded-2xl shadow-2xl p-6 overflow-y-auto max-h-[90vh] custom-scrollbar border border-white/20 flex flex-col">
-                <div class="flex items-center justify-between pb-3 border-b border-slate-700 mb-4">
-                    <div class="flex items-center space-x-2 space-x-reverse">
-                        <span id="preview-icon" class="text-xl"></span>
-                        <h3 class="font-bold text-slate-100 text-base sm:text-lg" id="preview-title">معاينة الملف</h3>
-                    </div>
-                    <button onclick="closePreviewModal()" class="text-slate-400 hover:text-slate-200 p-1">
-                        <i class="fa-solid fa-xmark text-xl"></i>
-                    </button>
-                </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-200 mb-2">اختر المادة الاختيارية <span class="text-red-500">*</span></label>
+            <select id="elective-subject" required class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none transition text-slate-100 font-medium">
+              <option value="" disabled selected>اختر الحقل أولاً...</option>
+            </select>
+          </div>
 
-                <div class="flex-1 bg-slate-800 rounded-xl p-4 flex items-center justify-center min-h-[300px] mb-4 overflow-hidden" id="preview-body"></div>
-
-                <div class="flex items-center justify-between pt-2 border-t border-slate-700 text-xs text-slate-400">
-                    <span id="preview-author">ناشر الملف: طالب</span>
-                    <button onclick="downloadSimulatedFile()" class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-lg text-xs transition flex items-center">
-                        <i class="fa-solid fa-download ml-1.5"></i>تحميل الملف
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div id="toast" class="toast"></div>
-
+          <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-primary-600 to-accent-500 text-white font-bold rounded-xl shadow-lg hover:shadow-primary-500/25 transition transform active:scale-98 flex items-center justify-center">
+            <span>الدخول إلى المنصة</span>
+            <i class="fa-solid fa-arrow-left mr-2"></i>
+          </button>
+        </form>
+      </div>
     </div>
 
-    <script>
-        const FIELD_DATA = {
-            'صحّي': {
-                core: ['علوم حياتية (أحياء)', 'كيمياء', 'لغة إنجليزية'],
-                electives: ['علوم الأرض والبيئة', 'الفيزياء', 'الرياضيات', 'الكيمياء التخصصية', 'علم الاجتماع وعلم النفس']
-            },
-            'هندسي': {
-                core: ['رياضيات', 'فيزياء', 'لغة إنجليزية'],
-                electives: ['علوم الأرض والبيئة', 'الكيمياء', 'الثقافة المالية', 'التاريخ']
-            },
-            'لغات': {
-                core: ['تربية إسلامية', 'لغة عربية تخصص', 'لغة عربية أدب', 'لغة إنجليزية'],
-                electives: ['جغرافيا', 'تاريخ', 'التربية الإسلامية التخصصية', 'علم الاجتماع وعلم النفس', 'الفلسفة']
-            },
-            'أعمال': {
-                core: ['رياضيات الأعمال', 'الثقافة المالية', 'اللغة الإنجليزية'],
-                electives: ['الجغرافيا', 'التاريخ', 'علم الاجتماع وعلم النفس', 'الفلسفة', 'التربية الإسلامية']
-            }
-        };
+    <!-- app -->
+    <div id="main-content" class="hidden flex-1 flex flex-col">
+      <header class="bg-slate-900 border-b border-slate-700 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <div class="flex items-center space-x-3 space-x-reverse">
+            <div class="w-10 h-10 bg-gradient-to-tr from-primary-600 to-accent-500 rounded-xl flex items-center justify-center text-white text-lg shadow-md">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div>
+              <h1 class="font-extrabold text-lg text-slate-100">منصة الدّارس</h1>
+              <span class="text-xs text-slate-400 font-medium">منصة دراسية خالية من التشتيت</span>
+            </div>
+          </div>
 
-        const GENERAL_ELECTIVES = [
-            'الرياضيات', 'الفيزياء', 'علوم الأرض والبيئة', 'الكيمياء',
-            'العلوم الحياتية', 'علم الاجتماع وعلم النفس', 'الفلسفة',
-            'الثقافة المالية', 'التاريخ', 'التربية الإسلامية التخصصية',
-            'العربي التخصصي', 'الجغرافيا'
-        ];
+          <div class="flex items-center space-x-3 sm:space-x-6 space-x-reverse">
+            <nav class="hidden md:flex items-center bg-slate-800 p-1 rounded-xl space-x-1 space-x-reverse">
+              <button onclick="switchTab('feed')" id="nav-feed" class="px-4 py-1.5 rounded-lg text-sm font-bold transition text-primary-300 bg-slate-700 shadow-sm">
+                <i class="fa-solid fa-book-open ml-1.5"></i>الشروحات والملفات
+              </button>
+              <button onclick="switchTab('rooms')" id="nav-rooms" class="px-4 py-1.5 rounded-lg text-sm font-bold transition text-slate-300 hover:text-slate-100">
+                <i class="fa-solid fa-headphones ml-1.5"></i>غرف الدراسة الصامتة
+              </button>
+            </nav>
 
-        const DEMO_POSTS = [
-            {
-                id: 1,
-                title: 'ملخص علوم الأحياء - الفصل الأول',
-                author: 'سارة',
-                field: 'صحّي',
-                subject: 'علوم حياتية (أحياء)',
-                desc: 'ملخص متميز مع أسئلة مراجعة وشرح مبسط.',
-                type: 'pdf',
-                date: 'قبل 2 ساعة',
-                fileUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-                fileName: 'summary-biology.pdf',
-            },
-            {
-                id: 2,
-                title: 'حلول فيزياء أساسية',
-                author: 'أحمد',
-                field: 'هندسي',
-                subject: 'فيزياء',
-                desc: 'شرح سريع للمعادلات + تمارين محلولة.',
-                type: 'image',
-                date: 'قبل 4 ساعة',
-                fileUrl: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=900&q=80',
-                fileName: 'physics.jpg',
-            },
-            {
-                id: 3,
-                title: 'مراجعة لغة إنجليزية - قواعد ومفردات',
-                author: 'ليلى',
-                field: 'لغات',
-                subject: 'لغة إنجليزية',
-                desc: 'مراجعة مختصرة + قائمة كلمات لاختبار سريع.',
-                type: 'pdf',
-                date: 'قبل يوم',
-                fileUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-                fileName: 'english-review.pdf',
-            },
-            {
-                id: 4,
-                title: 'ورقة مراجعة مالية',
-                author: 'يوسف',
-                field: 'أعمال',
-                subject: 'الثقافة المالية',
-                desc: 'شرح مبسط للشروحات المالية وكيفية التحليل.',
-                type: 'image',
-                date: 'قبل 6 ساعات',
-                fileUrl: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=900&q=80',
-                fileName: 'finance.jpg',
-            }
-        ];
+            <div class="flex items-center space-x-2 space-x-reverse border-r pr-3 border-slate-700">
+              <div id="user-avatar" class="w-9 h-9 rounded-full bg-primary-500/20 text-primary-300 font-bold flex items-center justify-center text-sm border border-primary-500/30">
+                ط
+              </div>
+              <div class="hidden sm:block text-right">
+                <p id="profile-name" class="text-xs font-bold text-slate-100 leading-tight">طالب</p>
+                <p id="profile-details" class="text-[11px] text-slate-400 font-semibold">الحقل | المادة</p>
+              </div>
+              <button onclick="resetProfile()" title="تغيير التخصص" class="text-slate-400 hover:text-rose-500 p-1.5 transition">
+                <i class="fa-solid fa-right-from-bracket"></i>
+              </button>
+            </div>
+          </div>
+        </div>
 
-        const STUDY_ROOMS = [
-            { name: 'غرفة الرياضيات', field: 'هندسي', activeCount: 12, target: 'حل مسائل + مراجعة' },
-            { name: 'غرفة الكيمياء', field: 'صحّي', activeCount: 9, target: 'ملخصات + أسئلة' },
-            { name: 'غرفة اللغة الإنجليزية', field: 'لغات', activeCount: 14, target: 'مفردات + تقوية' },
-            { name: 'غرفة المراجعة الشاملة', field: 'أعمال', activeCount: 8, target: 'مراجعة أسئلة' }
-        ];
+        <div class="md:hidden flex border-t border-slate-800 bg-slate-950">
+          <button onclick="switchTab('feed')" id="mob-nav-feed" class="flex-1 py-2 text-center text-xs font-bold text-primary-400 border-b-2 border-primary-600">
+            <i class="fa-solid fa-book-open block text-base mb-0.5"></i>الملفات
+          </button>
+          <button onclick="switchTab('rooms')" id="mob-nav-rooms" class="flex-1 py-2 text-center text-xs font-bold text-slate-400">
+            <i class="fa-solid fa-headphones block text-base mb-0.5"></i>الغرف
+          </button>
+        </div>
+      </header>
 
-        let currentUser = null;
-        let postsData = [];
-        let activeFilter = 'my-feed';
-        let selectedSubjectPill = 'ALL';
-        let currentPreviewPost = null;
-        let activeAudioSounds = {};
+      <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- feed -->
+        <div id="view-feed" class="space-y-6">
+          <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-5 sm:p-6 shadow-lg">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+              <div>
+                <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-primary-500/20 text-primary-300 border border-primary-500/30 mb-2">
+                  <i class="fa-solid fa-filter ml-1.5"></i>التصفية التلقائية مفعلة
+                </div>
+                <h2 id="feed-header-title" class="text-xl sm:text-2xl font-bold">منشورات الحقل الخاص بك</h2>
+                <p id="feed-header-subtitle" class="text-slate-300 text-xs sm:text-sm mt-1">تصفية ذكية حسب تخصصك ومادتك المختارة.</p>
+              </div>
 
-        let timerInterval = null;
-        let timerSeconds = 25 * 60;
-        let isTimerRunning = false;
-        let timerMode = 'study';
+              <button onclick="openPostModal()" class="inline-flex items-center justify-center px-5 py-3 bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition active:scale-95">
+                <i class="fa-solid fa-plus-circle ml-2 text-lg"></i>
+                <span>نشر شرح أو ملف جديد</span>
+              </button>
+            </div>
+          </div>
 
-        const SUPABASE_URL = 'https://hplrmnvgtzuusnghjbis.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhwbHJtbnZndHp1dXNuZ2hqYmlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI4NDU5NzYsImV4cCI6MjEwODQyMTk3Nn0.c0cEouNcelvDvpZkqNMbXpbv6tqBGqC1JKFgVzNej4A';
-        const BUCKET = 'files';
-        const DB_READY = !!(SUPABASE_URL && SUPABASE_KEY);
+          <!-- stats -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            <div class="glass-card rounded-2xl p-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs text-slate-400">ملفات هذا الأسبوع</p>
+                  <h3 class="text-2xl font-black mt-2 text-slate-100">128</h3>
+                </div>
+                <div class="w-11 h-11 rounded-xl bg-primary-500/10 text-primary-300 flex items-center justify-center">
+                  <i class="fa-solid fa-file-lines text-lg"></i>
+                </div>
+              </div>
+            </div>
 
-        function showToast(message, type = 'info') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = `toast show ${type}`;
-            clearTimeout(showToast.timeoutId);
-            showToast.timeoutId = setTimeout(() => {
-                toast.className = 'toast';
-            }, 2500);
-        }
+            <div class="glass-card rounded-2xl p-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs text-slate-400">غرف دراسية</p>
+                  <h3 class="text-2xl font-black mt-2 text-slate-100">12</h3>
+                </div>
+                <div class="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-300 flex items-center justify-center">
+                  <i class="fa-solid fa-house-laptop text-lg"></i>
+                </div>
+              </div>
+            </div>
 
-        function loadUserData() {
-            const saved = localStorage.getItem('aldaris_user');
-            if (saved) {
-                try { currentUser = JSON.parse(saved); } catch (e) { currentUser = null; }
-            }
-        }
+            <div class="glass-card rounded-2xl p-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs text-slate-400">جلسات تركيز</p>
+                  <h3 class="text-2xl font-black mt-2 text-slate-100">46</h3>
+                </div>
+                <div class="w-11 h-11 rounded-xl bg-amber-500/10 text-amber-300 flex items-center justify-center">
+                  <i class="fa-solid fa-clock text-lg"></i>
+                </div>
+              </div>
+            </div>
 
-        function saveUserData(name, field, elective) {
-            currentUser = { name, field, elective };
-            localStorage.setItem('aldaris_user', JSON.stringify(currentUser));
-        }
+            <div class="glass-card rounded-2xl p-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-xs text-slate-400">مراجعون متصلون</p>
+                  <h3 class="text-2xl font-black mt-2 text-slate-100">89</h3>
+                </div>
+                <div class="w-11 h-11 rounded-xl bg-rose-500/10 text-rose-300 flex items-center justify-center">
+                  <i class="fa-solid fa-users text-lg"></i>
+                </div>
+              </div>
+            </div>
+          </div>
 
-        function resetProfile() {
-            if (confirm('هل ترغب في تغيير تخصصك أو اسمك؟')) {
-                localStorage.removeItem('aldaris_user');
-                currentUser = null;
-                document.getElementById('main-content').classList.add('hidden');
-                document.getElementById('onboarding-modal').classList.remove('hidden');
-            }
-        }
+          <!-- search -->
+          <div class="glass-card rounded-2xl p-4">
+            <div class="flex flex-col md:flex-row md:items-center gap-3">
+              <div class="relative flex-1">
+                <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+                <input id="search-input" type="text" placeholder="ابحث عن شرح، ملف، أو مادة..." class="w-full pr-10 pl-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-sm text-slate-100 placeholder-slate-400 outline-none focus:ring-2 focus:ring-primary-500">
+              </div>
+              <button onclick="clearSearch()" class="px-4 py-3 bg-slate-800 text-slate-200 rounded-xl text-sm font-bold hover:bg-slate-700">مسح البحث</button>
+            </div>
+          </div>
 
-        const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-        const sbHeaders = (extra = {}) => ({ apikey: SUPABASE_KEY, ...(SUPABASE_KEY.startsWith('eyJ') ? { Authorization: 'Bearer ' + SUPABASE_KEY } : {}), ...extra });
+          <div class="grid grid-cols-1 xl:grid-cols-[1.6fr_0.8fr] gap-6">
+            <div class="space-y-6">
+              <div class="bg-slate-900 rounded-2xl p-2 border border-slate-700 flex items-center space-x-2 space-x-reverse overflow-x-auto custom-scrollbar">
+                <button onclick="filterPosts('all')" id="filter-btn-all" class="filter-tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-bold whitespace-nowrap bg-primary-500/10 text-primary-300 border border-primary-500/30"><i class="fa-solid fa-layer-group ml-1.5"></i>الكل</button>
+                <button onclick="filterPosts('my-feed')" id="filter-btn-my-feed" class="filter-tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-bold whitespace-nowrap text-slate-300 hover:bg-slate-800"><i class="fa-solid fa-user-check ml-1.5"></i>موادي المخصصة</button>
+                <div class="h-5 w-px bg-slate-700 mx-1"></div>
+                <button onclick="filterPosts('صحّي')" id="filter-btn-صحّي" class="filter-tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-bold whitespace-nowrap text-slate-300 hover:bg-slate-800"><i class="fa-solid fa-heart-pulse ml-1.5 text-rose-500"></i>صحّي</button>
+                <button onclick="filterPosts('هندسي')" id="filter-btn-هندسي" class="filter-tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-bold whitespace-nowrap text-slate-300 hover:bg-slate-800"><i class="fa-solid fa-compass-drafting ml-1.5 text-blue-500"></i>هندسي</button>
+                <button onclick="filterPosts('لغات')" id="filter-btn-لغات" class="filter-tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-bold whitespace-nowrap text-slate-300 hover:bg-slate-800"><i class="fa-solid fa-language ml-1.5 text-emerald-500"></i>لغات</button>
+                <button onclick="filterPosts('أعمال')" id="filter-btn-أعمال" class="filter-tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-bold whitespace-nowrap text-slate-300 hover:bg-slate-800"><i class="fa-solid fa-briefcase ml-1.5 text-amber-500"></i>أعمال</button>
+              </div>
 
-        function timeAgo(iso) {
-            const s = Math.max(0, (Date.now() - new Date(iso)) / 1000);
-            if (s < 60) return 'الآن';
-            if (s < 3600) return `منذ ${Math.floor(s / 60)} دقيقة`;
-            if (s < 86400) return `منذ ${Math.floor(s / 3600)} ساعة`;
-            return `منذ ${Math.floor(s / 86400)} يوم`;
-        }
+              <div id="subject-pills-container" class="flex flex-wrap gap-2 text-xs font-semibold"></div>
+              <div id="posts-container" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+              <div id="empty-state" class="hidden text-center py-16 bg-slate-900 rounded-2xl border border-dashed border-slate-600">
+                <div class="w-16 h-16 bg-slate-800 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                  <i class="fa-solid fa-folder-open"></i>
+                </div>
+                <h3 class="font-bold text-slate-200 text-lg">لا توجد نتائج مطابقة</h3>
+                <p class="text-slate-400 text-sm mt-1 max-w-md mx-auto">جرب تغيير الكلمات أو اختر مادة أخرى للبحث.</p>
+              </div>
+            </div>
 
-        async function loadPostsData() {
-            if (!DB_READY) {
-                postsData = DEMO_POSTS;
-                renderPosts();
-                return;
-            }
+            <div class="space-y-6">
+              <div class="glass-card rounded-2xl p-4">
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="font-bold text-slate-100">خطة اليوم</h3>
+                  <span class="text-xs text-primary-300 font-semibold">3 مهام</span>
+                </div>
 
-            try {
-                const res = await fetch(`${SUPABASE_URL}/rest/v1/posts?select=*&order=created_at.desc`, { headers: sbHeaders() });
-                if (!res.ok) throw new Error(res.status);
-
-                const apiPosts = await res.json();
-                if (!apiPosts || apiPosts.length === 0) {
-                    postsData = DEMO_POSTS;
-                } else {
-                    postsData = apiPosts.map(r => ({
-                        id: r.id,
-                        title: r.title,
-                        author: r.author,
-                        field: r.field,
-                        subject: r.subject,
-                        desc: r.description,
-                        type: r.type,
-                        date: timeAgo(r.created_at),
-                        fileUrl: r.file_url,
-                        fileName: r.file_name
-                    }));
-                }
-
-                renderPosts();
-            } catch (e) {
-                console.error('Supabase load failed, using demo data:', e);
-                postsData = DEMO_POSTS;
-                renderPosts();
-            }
-        }
-
-        function selectFieldCard(selectedField) {
-            document.querySelectorAll('.field-card').forEach(card => {
-                const radio = card.querySelector('input[type="radio"]');
-                if (card.querySelector(`input[value="${selectedField}"]`)) {
-                    card.classList.add('border-primary-500', 'bg-primary-500/10');
-                    card.classList.remove('border-slate-700');
-                    radio.checked = true;
-                } else {
-                    card.classList.remove('border-primary-500', 'bg-primary-500/10');
-                    card.classList.add('border-slate-700');
-                    radio.checked = false;
-                }
-            });
-
-            const select = document.getElementById('elective-subject');
-            select.innerHTML = '<option value="" disabled selected>اختر مادة اختيارية...</option>';
-
-            const electives = FIELD_DATA[selectedField]?.electives || GENERAL_ELECTIVES;
-            electives.forEach(subj => {
-                const opt = document.createElement('option');
-                opt.value = subj;
-                opt.textContent = subj;
-                select.appendChild(opt);
-            });
-        }
-
-        function handleOnboardingSubmit(e) {
-            e.preventDefault();
-            const name = document.getElementById('user-name').value.trim();
-            const fieldRadio = document.querySelector('input[name="academic-field"]:checked');
-            const elective = document.getElementById('elective-subject').value;
-
-            if (!name || !fieldRadio || !elective) {
-                showToast('يرجى تعبئة جميع الحقول المطلوبة.', 'error');
-                return;
-            }
-
-            saveUserData(name, fieldRadio.value, elective);
-            initAppUI();
-            showToast('تم تسجيل الدخول بنجاح', 'success');
-        }
-
-        function initAppUI() {
-            if (!currentUser) {
-                document.getElementById('onboarding-modal').classList.remove('hidden');
-                document.getElementById('main-content').classList.add('hidden');
-                return;
-            }
-
-            document.getElementById('onboarding-modal').classList.add('hidden');
-            document.getElementById('main-content').classList.remove('hidden');
-
-            document.getElementById('profile-name').textContent = currentUser.name;
-            document.getElementById('profile-details').textContent = `${currentUser.field} | ${currentUser.elective}`;
-            document.getElementById('user-avatar').textContent = currentUser.name.charAt(0);
-
-            filterPosts('all');
-        }
-
-        function renderSubjectPills() {
-            const container = document.getElementById('subject-pills-container');
-            container.innerHTML = '';
-
-            let subjects = [];
-            if (activeFilter === 'my-feed') {
-                const fieldInfo = FIELD_DATA[currentUser.field];
-                subjects = [...(fieldInfo?.core || []), currentUser.elective];
-            } else if (activeFilter === 'all') {
-                subjects = Object.values(FIELD_DATA).flatMap(f => [...f.core, ...f.electives]);
-            } else if (FIELD_DATA[activeFilter]) {
-                subjects = [...FIELD_DATA[activeFilter].core, ...FIELD_DATA[activeFilter].electives];
-            } else {
-                subjects = GENERAL_ELECTIVES;
-            }
-
-            subjects = Array.from(new Set(subjects));
-
-            const allPill = document.createElement('button');
-            allPill.className = `px-3 py-1 rounded-full border transition ${selectedSubjectPill === 'ALL' ? 'bg-slate-100 text-slate-900 border-slate-100' : 'bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-800'}`;
-            allPill.textContent = 'جميع مواد الحقل';
-            allPill.onclick = () => { selectedSubjectPill = 'ALL'; renderSubjectPills(); renderPosts(); };
-            container.appendChild(allPill);
-
-            subjects.forEach(subj => {
-                const pill = document.createElement('button');
-                const isSelected = selectedSubjectPill === subj;
-                pill.className = `px-3 py-1 rounded-full border transition ${isSelected ? 'bg-primary-600 text-white border-primary-600' : 'bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-800'}`;
-                pill.textContent = subj;
-                pill.onclick = () => { selectedSubjectPill = subj; renderSubjectPills(); renderPosts(); };
-                container.appendChild(pill);
-            });
-        }
-
-        function filterPosts(filter) {
-            activeFilter = filter;
-            selectedSubjectPill = 'ALL';
-
-            document.querySelectorAll('.filter-tab-btn').forEach(btn => {
-                btn.classList.remove('bg-primary-500/10', 'text-primary-300', 'border', 'border-primary-500/30');
-                btn.classList.add('text-slate-300');
-            });
-
-            const activeBtn = document.getElementById(`filter-btn-${filter}`);
-            if (activeBtn) {
-                activeBtn.classList.add('bg-primary-500/10', 'text-primary-300', 'border', 'border-primary-500/30');
-            }
-
-            const titleEl = document.getElementById('feed-header-title');
-            const subEl = document.getElementById('feed-header-subtitle');
-
-            if (filter === 'all') {
-                titleEl.textContent = 'كل الشروحات والملفات';
-                subEl.textContent = 'ملفات جميع الطلاب من كل الحقول والمواد.';
-            } else if (filter === 'my-feed') {
-                titleEl.textContent = `منشورات حقل ${currentUser.field} المخصصة لك`;
-                subEl.textContent = `يعرض المواد الأساسية لحقلك بالإضافة لمادتك الاختيارية (${currentUser.elective}).`;
-            } else {
-                titleEl.textContent = `استكشاف شروحات وملفات: الحقل ${filter}`;
-                subEl.textContent = `تصفح ملخصات الطلاب وملفاتهم المقترحة لهذا الحقل.`;
-            }
-
-            renderSubjectPills();
-            renderPosts();
-        }
-
-        function renderPosts() {
-            const container = document.getElementById('posts-container');
-            const emptyState = document.getElementById('empty-state');
-            container.innerHTML = '';
-
-            let filtered = [...postsData];
-
-            if (activeFilter === 'all') {
-                // all
-            } else if (activeFilter === 'my-feed') {
-                const userCore = FIELD_DATA[currentUser.field]?.core || [];
-                const userElective = currentUser.elective;
-                filtered = filtered.filter(p => p.field === currentUser.field && (userCore.includes(p.subject) || p.subject === userElective));
-            } else {
-                filtered = filtered.filter(p => p.field === activeFilter);
-            }
-
-            if (selectedSubjectPill !== 'ALL') {
-                filtered = filtered.filter(p => p.subject === selectedSubjectPill);
-            }
-
-            if (filtered.length === 0) {
-                emptyState.classList.remove('hidden');
-                return;
-            } else {
-                emptyState.classList.add('hidden');
-            }
-
-            filtered.forEach(post => {
-                const isPdf = post.type === 'pdf';
-                const card = document.createElement('div');
-                card.className = 'bg-slate-900 rounded-2xl border border-slate-700 hover:border-primary-500 shadow-sm hover:shadow-md transition flex flex-col justify-between overflow-hidden group';
-
-                card.innerHTML = `
-                    <div class="p-5">
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="px-2.5 py-1 rounded-lg text-xs font-bold ${isPdf ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'} flex items-center">
-                                <i class="fa-solid ${isPdf ? 'fa-file-pdf' : 'fa-image'} ml-1"></i>
-                                ${isPdf ? 'ملف PDF' : 'صورة شرح'}
-                            </span>
-                            <span class="text-[11px] text-slate-400 font-semibold">${post.date}</span>
-                        </div>
-                        <h4 class="font-bold text-slate-100 text-base mb-2 group-hover:text-primary-400 transition leading-snug">${esc(post.title)}</h4>
-                        <div class="flex items-center space-x-2 space-x-reverse text-xs font-semibold text-slate-400 mb-3">
-                            <span class="bg-slate-800 px-2 py-0.5 rounded text-slate-200">${esc(post.field)}</span>
-                            <span>•</span>
-                            <span class="text-primary-400">${esc(post.subject)}</span>
-                        </div>
-                        <p class="text-xs text-slate-300 leading-relaxed line-clamp-2">${esc(post.desc) || 'لا يوجد وصف إضافي.'}</p>
+                <div class="space-y-3">
+                  <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm font-bold text-slate-100">مراجعة كيمياء</span>
+                      <span class="text-[10px] bg-emerald-500/10 text-emerald-300 px-2 py-1 rounded-full">تم</span>
                     </div>
-                    <div class="px-5 py-3 bg-slate-950 border-t border-slate-800 flex items-center justify-between">
-                        <div class="flex items-center space-x-2 space-x-reverse text-xs text-slate-400">
-                            <i class="fa-regular fa-user text-slate-400"></i>
-                            <span class="font-semibold">${esc(post.author)}</span>
-                        </div>
-                        <button onclick="openPreviewModal(${post.id})" class="px-3 py-1.5 bg-slate-900 hover:bg-primary-600 text-primary-400 hover:text-white border border-primary-500/30 hover:border-primary-600 rounded-lg text-xs font-bold transition flex items-center shadow-sm">
-                            <i class="fa-solid fa-eye ml-1"></i> استعراض
-                        </button>
+                    <div class="mt-2 text-xs text-slate-400">من 09:00 إلى 09:45</div>
+                  </div>
+
+                  <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm font-bold text-slate-100">حل أسئلة فيزياء</span>
+                      <span class="text-[10px] bg-amber-500/10 text-amber-300 px-2 py-1 rounded-full">قيد التنفيذ</span>
                     </div>
-                `;
-                container.appendChild(card);
-            });
-        }
+                    <div class="mt-2 text-xs text-slate-400">من 10:00 إلى 10:50</div>
+                  </div>
 
-        function openPostModal() {
-            const fieldSelect = document.getElementById('post-field');
-            fieldSelect.value = currentUser ? currentUser.field : 'صحّي';
-            updatePostSubjectDropdown();
-            document.getElementById('post-modal').classList.remove('hidden');
-        }
-
-        function closePostModal() {
-            document.getElementById('post-modal').classList.add('hidden');
-        }
-
-        function updatePostSubjectDropdown() {
-            const selectedField = document.getElementById('post-field').value;
-            const subjectSelect = document.getElementById('post-subject');
-            subjectSelect.innerHTML = '';
-
-            const fieldInfo = FIELD_DATA[selectedField];
-            const allOptions = Array.from(new Set([...(fieldInfo?.core || []), ...(fieldInfo?.electives || [])]));
-
-            allOptions.forEach(subj => {
-                const opt = document.createElement('option');
-                opt.value = subj;
-                opt.textContent = subj;
-                subjectSelect.appendChild(opt);
-            });
-        }
-
-        function triggerFileInput() {
-            document.getElementById('dummy-file-input').click();
-        }
-
-        function handleFileSelect(e) {
-            const file = e.target.files[0];
-            if (file) {
-                document.getElementById('file-upload-label').textContent = `تم اختيار: ${file.name}`;
-            }
-        }
-
-        async function handleNewPostSubmit(e) {
-            e.preventDefault();
-            const title = document.getElementById('post-title').value.trim();
-            const field = document.getElementById('post-field').value;
-            const subject = document.getElementById('post-subject').value;
-            const desc = document.getElementById('post-desc').value.trim();
-            const input = document.getElementById('dummy-file-input');
-            const file = input.files[0];
-
-            if (!title || !field || !subject) {
-                showToast('برجاء إدخال جميع الحقول المطلوبة.', 'error');
-                return;
-            }
-            if (!file) {
-                showToast('اختر الملف أولاً.', 'error');
-                return;
-            }
-
-            const isImg = file.type.startsWith('image/');
-            if (!isImg && file.type !== 'application/pdf') {
-                showToast('المسموح فقط PDF أو صور.', 'error');
-                return;
-            }
-            if (file.size > 50 * 1024 * 1024) {
-                showToast('حجم الملف كبير جدًا (الحد الأقصى 50MB).', 'error');
-                return;
-            }
-
-            const btn = e.target.querySelector('button[type="submit"]');
-            const oldText = btn.textContent;
-            btn.disabled = true;
-            btn.textContent = 'جاري الرفع...';
-
-            try {
-                if (!DB_READY) {
-                    const newPost = {
-                        id: Date.now(),
-                        title,
-                        author: currentUser?.name || 'طالب',
-                        field,
-                        subject,
-                        desc,
-                        type: isImg ? 'image' : 'pdf',
-                        date: 'الآن',
-                        fileUrl: isImg ? URL.createObjectURL(file) : 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-                        fileName: file.name
-                    };
-                    postsData.unshift(newPost);
-                    renderPosts();
-                    showToast('تمت إضافة المنشور تجريبياً بنجاح', 'success');
-                    closePostModal();
-                    document.getElementById('post-title').value = '';
-                    document.getElementById('post-desc').value = '';
-                    input.value = '';
-                    document.getElementById('file-upload-label').textContent = 'اضغط لاختيار ملف من جهازك';
-                    return;
-                }
-
-                const ext = (file.name.split('.').pop() || 'bin').replace(/[^a-z0-9]/gi, '').toLowerCase();
-                const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-                let r = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`, {
-                    method: 'POST',
-                    headers: sbHeaders({ 'Content-Type': file.type }),
-                    body: file
-                });
-                if (!r.ok) throw new Error('upload');
-
-                const fileUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${path}`;
-                r = await fetch(`${SUPABASE_URL}/rest/v1/posts`, {
-                    method: 'POST',
-                    headers: sbHeaders({ 'Content-Type': 'application/json' }),
-                    body: JSON.stringify({
-                        title,
-                        author: currentUser.name,
-                        field,
-                        subject,
-                        description: desc,
-                        type: isImg ? 'image' : 'pdf',
-                        file_url: fileUrl,
-                        file_name: file.name
-                    })
-                });
-
-                if (!r.ok) throw new Error('insert');
-
-                showToast('تم نشر الملف بنجاح', 'success');
-                document.getElementById('post-title').value = '';
-                document.getElementById('post-desc').value = '';
-                input.value = '';
-                document.getElementById('file-upload-label').textContent = 'اضغط لاختيار ملف من جهازك';
-                closePostModal();
-                await loadPostsData();
-            } catch (err) {
-                console.error(err);
-                showToast('تعذّر رفع الملف، حاول مرة أخرى.', 'error');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = oldText;
-            }
-        }
-
-        function openPreviewModal(postId) {
-            const post = postsData.find(p => p.id === postId);
-            if (!post) return;
-
-            currentPreviewPost = post;
-            document.getElementById('preview-title').textContent = post.title;
-            document.getElementById('preview-author').textContent = `ناشر الشرح: ${post.author} (${post.field} - ${post.subject})`;
-
-            const previewIcon = document.getElementById('preview-icon');
-            const previewBody = document.getElementById('preview-body');
-
-            if (post.type === 'pdf') {
-                previewIcon.innerHTML = '<i class="fa-solid fa-file-pdf text-red-500"></i>';
-                previewBody.innerHTML = `<iframe src="${esc(post.fileUrl)}" class="w-full h-[60vh] rounded-lg border border-slate-700"></iframe>`;
-            } else {
-                previewIcon.innerHTML = '<i class="fa-solid fa-image text-emerald-500"></i>';
-                previewBody.innerHTML = `
-                    <div class="text-center p-2">
-                        <img src="${esc(post.fileUrl)}" alt="Image Preview" class="max-h-[400px] w-auto shadow-md rounded-xl border border-slate-700 mx-auto object-contain">
+                  <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm font-bold text-slate-100">قراءة لغة إنجليزية</span>
+                      <span class="text-[10px] bg-sky-500/10 text-sky-300 px-2 py-1 rounded-full">مجدول</span>
                     </div>
-                `;
-            }
+                    <div class="mt-2 text-xs text-slate-400">من 11:15 إلى 11:50</div>
+                  </div>
+                </div>
+              </div>
 
-            document.getElementById('preview-modal').classList.remove('hidden');
-        }
+              <div class="glass-card rounded-2xl p-4">
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="font-bold text-slate-100">المواضيع الرائجة</h3>
+                  <span class="text-xs text-slate-400">هذا الأسبوع</span>
+                </div>
 
-        function closePreviewModal() {
-            document.getElementById('preview-modal').classList.add('hidden');
-        }
-
-        function downloadSimulatedFile() {
-            if (!currentPreviewPost) return;
-            const a = document.createElement('a');
-            a.href = currentPreviewPost.fileUrl;
-            a.target = '_blank';
-            a.rel = 'noopener';
-            a.download = currentPreviewPost.fileName || '';
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-        }
-
-        function switchTab(tab) {
-            const feedView = document.getElementById('view-feed');
-            const roomsView = document.getElementById('view-rooms');
-            const navFeed = document.getElementById('nav-feed');
-            const navRooms = document.getElementById('nav-rooms');
-            const mobFeed = document.getElementById('mob-nav-feed');
-            const mobRooms = document.getElementById('mob-nav-rooms');
-
-            if (tab === 'feed') {
-                feedView.classList.remove('hidden');
-                roomsView.classList.add('hidden');
-                navFeed.className = "px-4 py-1.5 rounded-lg text-sm font-bold transition text-primary-300 bg-slate-700 shadow-sm";
-                navRooms.className = "px-4 py-1.5 rounded-lg text-sm font-bold transition text-slate-300 hover:text-slate-100";
-                mobFeed.className = "flex-1 py-2 text-center text-xs font-bold text-primary-400 border-b-2 border-primary-600";
-                mobRooms.className = "flex-1 py-2 text-center text-xs font-bold text-slate-400";
-            } else {
-                feedView.classList.add('hidden');
-                roomsView.classList.remove('hidden');
-                navRooms.className = "px-4 py-1.5 rounded-lg text-sm font-bold transition text-primary-300 bg-slate-700 shadow-sm";
-                navFeed.className = "px-4 py-1.5 rounded-lg text-sm font-bold transition text-slate-300 hover:text-slate-100";
-                mobRooms.className = "flex-1 py-2 text-center text-xs font-bold text-primary-400 border-b-2 border-primary-600";
-                mobFeed.className = "flex-1 py-2 text-center text-xs font-bold text-slate-400";
-            }
-        }
-
-        function setupStudyRoomsUI() {
-            const grid = document.getElementById('study-rooms-grid');
-            grid.innerHTML = '';
-
-            STUDY_ROOMS.forEach(room => {
-                const card = document.createElement('div');
-                card.className = 'bg-slate-900 p-5 rounded-2xl border border-slate-700 hover:border-primary-500 shadow-sm flex flex-col justify-between space-y-4';
-                card.innerHTML = `
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-200">${room.field}</span>
-                            <span class="text-xs font-bold text-emerald-400 flex items-center">
-                                <i class="fa-solid fa-users ml-1 text-slate-400"></i> ${room.activeCount} طالب يتدارسون
-                            </span>
-                        </div>
-                        <h4 class="font-bold text-slate-100 text-base">${room.name}</h4>
-                        <p class="text-xs text-slate-400 mt-1"><i class="fa-solid fa-bullseye ml-1 text-slate-400"></i>${room.target}</p>
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between bg-slate-800/70 rounded-xl p-3 border border-slate-700">
+                    <div class="flex items-center space-x-2 space-x-reverse">
+                      <div class="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-300 flex items-center justify-center">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                      </div>
+                      <span class="text-sm font-bold text-slate-200">علوم الحياة</span>
                     </div>
-                    <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
-                        <span class="text-[11px] text-slate-400 font-semibold"><i class="fa-solid fa-microphone-slash ml-1 text-rose-400"></i>صامتة تماماً</span>
-                        <button onclick="enterSilentRoom('${room.name}')" class="px-4 py-1.5 bg-primary-500/10 hover:bg-primary-600 text-primary-300 hover:text-white rounded-xl text-xs font-bold transition">
-                            الانضمام للغرفة
-                        </button>
+                    <span class="text-xs text-slate-400">48 منشور</span>
+                  </div>
+
+                  <div class="flex items-center justify-between bg-slate-800/70 rounded-xl p-3 border border-slate-700">
+                    <div class="flex items-center space-x-2 space-x-reverse">
+                      <div class="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-300 flex items-center justify-center">
+                        <i class="fa-solid fa-compass-drafting"></i>
+                      </div>
+                      <span class="text-sm font-bold text-slate-200">الفيزياء</span>
                     </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
+                    <span class="text-xs text-slate-400">34 منشور</span>
+                  </div>
 
-        function enterSilentRoom(roomName) {
-            showToast(`تم دخول "${roomName}" بنجاح`, 'success');
-        }
+                  <div class="flex items-center justify-between bg-slate-800/70 rounded-xl p-3 border border-slate-700">
+                    <div class="flex items-center space-x-2 space-x-reverse">
+                      <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-300 flex items-center justify-center">
+                        <i class="fa-solid fa-language"></i>
+                      </div>
+                      <span class="text-sm font-bold text-slate-200">اللغة الإنجليزية</span>
+                    </div>
+                    <span class="text-xs text-slate-400">29 منشور</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        function updateTimerDisplay() {
-            const mins = Math.floor(timerSeconds / 60);
-            const secs = timerSeconds % 60;
-            document.getElementById('timer-display').textContent =
-                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
+        <!-- rooms -->
+        <div id="view-rooms" class="hidden space-y-6">
+          <div class="bg-gradient-to-r from-slate-900 via-primary-950 to-slate-900 rounded-2xl p-6 shadow-xl">
+            <div class="max-w-2xl">
+              <span class="px-3 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-full text-xs font-bold mb-3 inline-block">
+                <i class="fa-solid fa-microphone-slash ml-1.5"></i>بيئة دراسية صامتة 100%
+              </span>
+              <h2 class="text-2xl font-bold">غرف الدراسة الجماعية الصامتة</h2>
+              <p class="text-slate-300 text-sm mt-2 leading-relaxed">
+                ادخل الغرفة، فعّل مؤقت البومودورو، واستمع للأصوات المريحة للتركيز. لا توجد مايكروفونات ولا شات نصي لضمان بيئة خالية من المنبهات.
+              </p>
+            </div>
+          </div>
 
-        function toggleTimer() {
-            const btn = document.getElementById('timer-start-btn');
-            if (isTimerRunning) {
-                clearInterval(timerInterval);
-                isTimerRunning = false;
-                btn.innerHTML = '<i class="fa-solid fa-play ml-1.5 text-sm"></i> استئناف';
-                btn.classList.replace('bg-amber-600', 'bg-primary-600');
-            } else {
-                isTimerRunning = true;
-                btn.innerHTML = '<i class="fa-solid fa-pause ml-1.5 text-sm"></i> إيقاف مؤقت';
-                btn.classList.replace('bg-primary-600', 'bg-amber-600');
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-1 space-y-6">
+              <div class="bg-slate-900 rounded-2xl p-6 border border-slate-700 shadow-sm text-center">
+                <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+                  <h3 class="font-bold text-slate-100 text-sm flex items-center">
+                    <i class="fa-regular fa-clock ml-2 text-primary-400"></i>مؤقت التركيز
+                  </h3>
+                  <span id="timer-mode-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary-500/10 text-primary-400">وقت الدراسة</span>
+                </div>
 
-                timerInterval = setInterval(() => {
-                    if (timerSeconds > 0) {
-                        timerSeconds--;
-                        updateTimerDisplay();
-                    } else {
-                        clearInterval(timerInterval);
-                        isTimerRunning = false;
-                        btn.innerHTML = '<i class="fa-solid fa-play ml-1.5 text-sm"></i> بدء';
-                        btn.className = "px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl shadow-md transition flex items-center";
-                        showToast(timerMode === 'study' ? 'انتهت جلسة الدراسة! خذ استراحة لمدة 5 دقائق.' : 'انتهت الاستراحة! استعد لجلسة دراسة جديدة.', 'info');
-                    }
-                }, 1000);
-            }
-        }
+                <div class="my-6">
+                  <div id="timer-display" class="text-5xl font-black text-slate-100 tracking-wider font-mono">25:00</div>
+                </div>
 
-        function resetTimer() {
-            clearInterval(timerInterval);
-            isTimerRunning = false;
-            timerSeconds = (timerMode === 'study') ? 25 * 60 : 5 * 60;
-            const btn = document.getElementById('timer-start-btn');
-            btn.innerHTML = '<i class="fa-solid fa-play ml-1.5 text-sm"></i> بدء';
-            btn.className = "px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl shadow-md transition flex items-center";
-            updateTimerDisplay();
-        }
+                <div class="flex items-center justify-center space-x-2 space-x-reverse mb-4">
+                  <button onclick="toggleTimer()" id="timer-start-btn" class="px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl shadow-md transition flex items-center">
+                    <i class="fa-solid fa-play ml-1.5 text-sm"></i> بدء
+                  </button>
+                  <button onclick="resetTimer()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl transition">
+                    <i class="fa-solid fa-rotate-right"></i>
+                  </button>
+                </div>
 
-        function setTimerMode(mode) {
-            timerMode = mode;
-            document.getElementById('timer-mode-badge').textContent = mode === 'study' ? 'وقت الدراسة' : 'وقت الراحة';
-            resetTimer();
-        }
+                <div class="grid grid-cols-2 gap-2 text-xs font-bold pt-2">
+                  <button onclick="setTimerMode('study')" class="py-2 rounded-lg bg-primary-500/10 text-primary-300">25 دقيقة</button>
+                  <button onclick="setTimerMode('break')" class="py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700">5 دقائق</button>
+                </div>
+              </div>
 
-        let audioCtx = null;
+              <div class="bg-slate-900 rounded-2xl p-6 border border-slate-700 shadow-sm">
+                <h3 class="font-bold text-slate-100 text-sm mb-4 pb-3 border-b border-slate-800 flex items-center">
+                  <i class="fa-solid fa-sliders ml-2 text-accent-600"></i>أصوات الخلفية
+                </h3>
 
-        function toggleAmbientSound(type) {
-            const btn = document.getElementById(`sound-btn-${type}`);
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2 space-x-reverse text-sm font-semibold text-slate-200">
+                      <i class="fa-solid fa-cloud-showers-heavy text-slate-400 w-5"></i>
+                      <span>صوت المطر</span>
+                    </div>
+                    <button onclick="toggleAmbientSound('rain')" id="sound-btn-rain" class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">تشغيل</button>
+                  </div>
 
-            if (activeAudioSounds[type]) {
-                activeAudioSounds[type].stop();
-                delete activeAudioSounds[type];
-                btn.textContent = 'تشغيل';
-                btn.className = 'px-3 py-1 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700';
-            } else {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2 space-x-reverse text-sm font-semibold text-slate-200">
+                      <i class="fa-solid fa-book-reader text-slate-400 w-5"></i>
+                      <span>هدوء المكتبة</span>
+                    </div>
+                    <button onclick="toggleAmbientSound('library')" id="sound-btn-library" class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">تشغيل</button>
+                  </div>
 
-                const soundNode = createWhiteNoiseNode(type);
-                activeAudioSounds[type] = soundNode;
-                btn.textContent = 'إيقاف';
-                btn.className = 'px-3 py-1 rounded-lg text-xs font-bold bg-rose-500/10 text-rose-400 border border-rose-500/30';
-            }
-        }
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2 space-x-reverse text-sm font-semibold text-slate-200">
+                      <i class="fa-solid fa-water text-slate-400 w-5"></i>
+                      <span>أمواج البحر</span>
+                    </div>
+                    <button onclick="toggleAmbientSound('waves')" id="sound-btn-waves" class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">تشغيل</button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        function createWhiteNoiseNode(type) {
-            const bufferSize = audioCtx.sampleRate * 2;
-            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-            const data = buffer.getChannelData(0);
+            <div class="lg:col-span-2 space-y-4">
+              <div class="flex items-center justify-between">
+                <h3 class="font-bold text-slate-100 text-lg">الغرف الدراسية المتاحة الآن</h3>
+              </div>
+              <div id="study-rooms-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
 
-            for (let i = 0; i < bufferSize; i++) {
-                data[i] = Math.random() * 2 - 1;
-            }
+    <!-- modal add post -->
+    <div id="post-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden">
+      <div class="glass-card w-full max-w-lg rounded-2xl shadow-2xl p-6 overflow-y-auto max-h-[90vh] custom-scrollbar border border-white/20">
+        <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-700">
+          <h3 class="font-bold text-lg text-slate-100 flex items-center">
+            <i class="fa-solid fa-cloud-arrow-up ml-2 text-primary-400"></i>مشاركة شرح أو ملف جديد
+          </h3>
+          <button onclick="closePostModal()" class="text-slate-400 hover:text-slate-200 p-1">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
 
-            const noise = audioCtx.createBufferSource();
-            noise.buffer = buffer;
-            noise.loop = true;
+        <form onsubmit="handleNewPostSubmit(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-200 mb-1">عنوان الشرح / الملف <span class="text-red-500">*</span></label>
+            <input type="text" id="post-title" required placeholder="مثال: تلخيص الفصل الأول..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none text-sm">
+          </div>
 
-            const filter = audioCtx.createBiquadFilter();
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-200 mb-1">الحقل <span class="text-red-500">*</span></label>
+              <select id="post-field" required onchange="updatePostSubjectDropdown()" class="w-full px-3 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none text-xs sm:text-sm font-semibold">
+                <option value="صحّي">الحقل الصحي</option>
+                <option value="هندسي">الحقل الهندسي</option>
+                <option value="لغات">حقل اللغات</option>
+                <option value="أعمال">حقل الأعمال</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-200 mb-1">المادة <span class="text-red-500">*</span></label>
+              <select id="post-subject" required class="w-full px-3 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none text-xs sm:text-sm font-semibold"></select>
+            </div>
+          </div>
 
-            if (type === 'rain') {
-                filter.type = 'lowpass';
-                filter.frequency.value = 800;
-            } else if (type === 'library') {
-                filter.type = 'bandpass';
-                filter.frequency.value = 400;
-            } else {
-                filter.type = 'lowpass';
-                filter.frequency.value = 300;
-            }
+          <div>
+            <label class="block text-xs font-bold text-slate-200 mb-1">وصف قصير أو الملاحظات</label>
+            <textarea id="post-desc" rows="3" placeholder="اكتب ملاحظات توضيحية..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none text-sm resize-none"></textarea>
+          </div>
 
-            const gain = audioCtx.createGain();
-            gain.gain.value = 0.15;
+          <div>
+            <label class="block text-xs font-bold text-slate-200 mb-1">نوع المرفق <span class="text-red-500">*</span></label>
+            <div class="flex items-center space-x-3 space-x-reverse mb-2">
+              <label class="flex items-center text-xs font-semibold text-slate-200 cursor-pointer">
+                <input type="radio" name="post-type" value="pdf" checked class="ml-1 text-primary-400 focus:ring-primary-500">
+                <i class="fa-solid fa-file-pdf text-red-500 ml-1"></i>ملف PDF
+              </label>
+              <label class="flex items-center text-xs font-semibold text-slate-200 cursor-pointer">
+                <input type="radio" name="post-type" value="image" class="ml-1 text-primary-400 focus:ring-primary-500">
+                <i class="fa-solid fa-image text-emerald-500 ml-1"></i>صورة شرح
+              </label>
+            </div>
 
-            noise.connect(filter);
-            filter.connect(gain);
-            gain.connect(audioCtx.destination);
+            <div class="border-2 border-dashed border-slate-600 rounded-xl p-4 text-center bg-slate-950 hover:bg-slate-800 transition cursor-pointer relative" onclick="triggerFileInput()">
+              <input type="file" id="dummy-file-input" accept=".pdf,image/*" class="hidden" onchange="handleFileSelect(event)">
+              <i class="fa-solid fa-file-arrow-up text-2xl text-slate-400 mb-1 block"></i>
+              <p class="text-xs font-bold text-slate-300" id="file-upload-label">اضغط لاختيار ملف من جهازك</p>
+              <p class="text-[10px] text-slate-400 mt-0.5">PDF، PNG، JPG حتى 50 ميجابايت</p>
+            </div>
+          </div>
 
-            noise.start();
+          <div class="pt-2">
+            <button type="submit" class="w-full py-3 bg-gradient-to-r from-primary-600 to-accent-500 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition">
+              نشر الملف الآن
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
 
-            return {
-                stop: () => {
-                    try { noise.stop(); } catch (e) {}
-                }
-            };
-        }
+    <!-- preview -->
+    <div id="preview-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm hidden">
+      <div class="glass-card w-full max-w-3xl rounded-2xl p-6 overflow-y-auto max-h-[90vh] custom-scrollbar border border-white/20 flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-700 mb-4">
+          <div class="flex items-center space-x-2 space-x-reverse">
+            <span id="preview-icon" class="text-xl"></span>
+            <h3 class="font-bold text-slate-100 text-base sm:text-lg" id="preview-title">معاينة الملف</h3>
+          </div>
+          <button onclick="closePreviewModal()" class="text-slate-400 hover:text-slate-200 p-1">
+            <i class="fa-solid fa-xmark text-xl"></i>
+          </button>
+        </div>
 
-        window.onload = function() {
-            loadUserData();
-            loadPostsData();
-            setInterval(loadPostsData, 30000);
+        <div id="preview-body" class="flex-1 bg-slate-800 rounded-xl p-4 flex items-center justify-center min-h-[300px] mb-4 overflow-hidden"></div>
 
-            initAppUI();
-            setupStudyRoomsUI();
-            updateTimerDisplay();
-        };
-    </script>
-</body>
-</html>
+        <div class="flex items-center justify-between pt-2 border-t border-slate-700 text-xs text-slate-400">
+          <span id="preview-author">ناشر الملف: طالب</span>
+          <button onclick="downloadSimulatedFile()" class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-lg text-xs transition flex items-center">
+            <i class="fa-solid fa-download ml-1.5"></i>تحميل الملف
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+  </div>
+
+  <script>
+    const FIELD_DATA = {
+      'صحّي': {
+        core: ['علوم حياتية (أحياء)', 'كيمياء', 'لغة إنجليزية'],
+        electives: ['علوم الأرض والبيئة', 'الفيزياء', 'الرياضيات', 'الكيمياء التخصصية', 'علم الاجتماع وعلم النفس']
+      },
+      'هندسي': {
+        core: ['رياضيات', 'فيزياء', 'لغة إنجليزية'],
+        electives: ['علوم الأرض والبيئة', 'الكيمياء', 'الثقافة المالية', 'التاريخ']
+      },
+      'لغات': {
+        core: ['تربية إسلامية', 'لغة عربية تخصص', 'لغة عربية أدب', 'لغة إنجليزية'],
+        electives: ['جغرافيا', 'تاريخ', 'التربية الإسلامية التخصصية', 'علم الاجتماع وعلم النفس', 'الفلسفة']
+      },
+      'أعمال': {
+        core: ['رياضيات الأعمال', 'الثقافة المالية', 'اللغة الإنجليزية'],
+        electives: ['الجغرافيا', 'التاريخ', 'علم الاجتماع وعلم النفس', 'الفلسفة', 'التربية الإسلامية']
+      }
+    };
+
+    const GENERAL_ELECTIVES = [
+      'الرياضيات', 'الفيزياء', 'علوم الأرض والبيئة', 'الكيمياء',
+      'العلوم الحياتية', 'علم الاجتماع وعلم النفس', 'الفلسفة',
+      'الثقافة المالية', 'التاريخ', 'التربية الإسلامية التخصصية',
+      'العربي التخصصي', 'الجغرافيا'
+    ];
+
+    const DEMO_POSTS = [
+      {
+        id: 1,
+        title: 'ملخص علوم الأحياء - الفصل الأول',
+        author: 'سارة',
+        field: 'صحّي',
+        subject: 'علوم حياتية (أحياء)',
+        desc: 'ملخص بسيط + أسئلة مراجعة + حلول مختصرة.',
+        type: 'pdf',
+        date: 'قبل 2 ساعة',
+        fileUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+        fileName: 'summary-biology.pdf'
+      },
+      {
+        id: 2,
+        title: 'حلول فيزياء](#)
