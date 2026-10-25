@@ -37,6 +37,8 @@ const STUDY_ROOMS = [];
 let currentUser = null;
 let postsData = [];
 let postsLoading = true;
+let adminToken = null;
+const deviceId = localStorage.getItem('aldaris_device') || (() => { const x = Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('aldaris_device', x); return x; })();
 let activeFilter = 'my-feed';
 let selectedSubjectPill = 'ALL';
 let currentPreviewPost = null;
@@ -84,7 +86,7 @@ function toast(msg, type = 'error') {
     setTimeout(() => t.remove(), 3500);
 }
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const sbHeaders = (extra = {}) => ({ apikey: SUPABASE_KEY, ...(SUPABASE_KEY.startsWith('eyJ') ? { Authorization: 'Bearer ' + SUPABASE_KEY } : {}), ...extra });
+const sbHeaders = (extra = {}) => ({ apikey: SUPABASE_KEY, ...((adminToken || SUPABASE_KEY.startsWith('eyJ')) ? { Authorization: 'Bearer ' + (adminToken || SUPABASE_KEY) } : {}), ...extra });
 
 function timeAgo(iso) {
     const s = Math.max(0, (Date.now() - new Date(iso)) / 1000);
@@ -109,7 +111,7 @@ async function loadPostsData() {
     try {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/posts?select=*&order=created_at.desc`, { headers: sbHeaders() });
         if (!res.ok) throw new Error(res.status);
-        postsData = (await res.json()).map(r => ({ id: r.id, title: r.title, author: r.author, field: r.field, subject: canon(r.subject), desc: r.description, type: r.type, date: timeAgo(r.created_at), fileUrl: r.file_url, fileName: r.file_name }));
+        postsData = (await res.json()).map(r => ({ id: r.id, title: r.title, author: r.author, field: r.field, subject: canon(r.subject), desc: r.description, type: r.type, date: timeAgo(r.created_at), fileUrl: r.file_url, fileName: r.file_name, deviceId: r.device_id }));
         postsLoading = false;
         if (currentUser) renderPosts();
     } catch (e) { console.error(e); postsLoading = false; if (currentUser) renderPosts(); }
@@ -304,7 +306,8 @@ function renderPosts() {
                 </button>
             </div>
         `;
-        container.appendChild(card);
+        if (typeof decoratePostCard === 'function') decoratePostCard(card, post);
+                container.appendChild(card);
     });
 }
 
@@ -370,7 +373,7 @@ async function handleNewPostSubmit(e) {
         let r = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`, { method: 'POST', headers: sbHeaders({ 'Content-Type': file.type }), body: file });
         if (!r.ok) throw new Error('upload');
         const fileUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${path}`;
-        r = await fetch(`${SUPABASE_URL}/rest/v1/posts`, { method: 'POST', headers: sbHeaders({ 'Content-Type': 'application/json' }), body: JSON.stringify({ title, author: currentUser.name, field, subject, description: desc, type: isImg ? 'image' : 'pdf', file_url: fileUrl, file_name: file.name }) });
+        r = await fetch(`${SUPABASE_URL}/rest/v1/posts`, { method: 'POST', headers: sbHeaders({ 'Content-Type': 'application/json' }), body: JSON.stringify({ title, author: currentUser.name, field, subject, description: desc, type: isImg ? 'image' : 'pdf', file_url: fileUrl, file_name: file.name, device_id: deviceId }) });
         if (!r.ok) throw new Error('insert');
 
         document.getElementById('post-title').value = '';
