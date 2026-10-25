@@ -110,10 +110,14 @@
                                 <i class="fa-solid fa-book-open ml-1.5"></i>الشروحات والملفات
                             </button>
                             <button onclick="switchTab('rooms')" id="nav-rooms" class="px-4 py-1.5 rounded-lg text-sm font-bold transition text-slate-300 hover:text-slate-100">
-                                <i class="fa-solid fa-headphones ml-1.5"></i>غرف الدراسة الصامتة
+                                <i class="fa-solid fa-headphones ml-1.5"></i>الغرف الصوتية
+                            </button>
+                            <button onclick="switchTab('chat')" id="nav-chat" class="px-4 py-1.5 rounded-lg text-sm font-bold transition text-slate-300 hover:text-slate-100">
+                                <i class="fa-solid fa-comments ml-1.5"></i>المحادثات
                             </button>
                         </nav>
 
+                        <button id="admin-btn" onclick="openAdminModal()" title="الأدمن" class="text-slate-500 hover:text-primary-400 p-1.5 transition"><i class="fa-solid fa-lock"></i></button>
                         <div class="flex items-center space-x-2 space-x-reverse border-r pr-3 border-slate-700">
                             <div class="w-9 h-9 rounded-full bg-primary-500/20 text-primary-300 font-bold flex items-center justify-center text-sm border border-primary-500/30" id="user-avatar">
                                 ط
@@ -134,7 +138,10 @@
                         <i class="fa-solid fa-book-open block text-base mb-0.5"></i>الملفات والشروحات
                     </button>
                     <button onclick="switchTab('rooms')" id="mob-nav-rooms" class="flex-1 py-2 text-center text-xs font-bold text-slate-400">
-                        <i class="fa-solid fa-headphones block text-base mb-0.5"></i>الغرف الصامتة
+                        <i class="fa-solid fa-headphones block text-base mb-0.5"></i>الغرف الصوتية
+                    </button>
+                    <button onclick="switchTab('chat')" id="mob-nav-chat" class="flex-1 py-2 text-center text-xs font-bold text-slate-400">
+                        <i class="fa-solid fa-comments block text-base mb-0.5"></i>المحادثات
                     </button>
                 </div>
             </header>
@@ -288,6 +295,18 @@
                         </div>
                     </div>
                 </div>
+            
+                <!-- VIEW 3: CHAT -->
+                <div id="view-chat" class="hidden">
+                    <div class="bg-slate-900 rounded-2xl border border-slate-700 flex flex-col h-[70vh]">
+                        <div class="px-5 py-3 border-b border-slate-800 font-bold text-slate-100 text-sm"><i class="fa-solid fa-comments ml-2 text-primary-400"></i>المحادثة العامة</div>
+                        <div id="chat-list" class="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar"></div>
+                        <form id="chat-form" class="p-3 border-t border-slate-800 flex gap-2">
+                            <input id="chat-input" maxlength="500" autocomplete="off" placeholder="اكتب رسالتك..." class="flex-1 min-w-0 px-4 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary-500 text-slate-100">
+                            <button class="px-5 bg-gradient-to-r from-primary-600 to-accent-500 text-white font-bold rounded-xl text-sm"><i class="fa-solid fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                </div>
             </main>
         </div>
 
@@ -390,5 +409,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
     <script src="app.js"></script>
     <script src="rooms.js"></script>
+    <script src="chat.js"></script>
+    <script src="admin.js"></script>
 </body>
 </html>
